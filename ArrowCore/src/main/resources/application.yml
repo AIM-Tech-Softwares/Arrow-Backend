@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: ArrowCore
+  datasource:
+    url: jdbc:postgresql://localhost:5432/arrow
+    username: postgres
+    password: 1234567
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        ddl-auto: none
+#        connection:
+#          provider_disables_autocommit: true
+#          provider_class: com.seuprojeto.config.SchemaAwareConnectionProvider
