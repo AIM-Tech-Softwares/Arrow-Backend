@@ -1,0 +1,47 @@
+package com.aimtech.arrowcore.domain.business.usecases.auth_module;
+
+import com.aimtech.arrowcore.core.properties.SecurityProperties;
+import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class GenerateJwtTokenService {
+    private final JwtEncoder jwtEncoder;
+    private final SecurityProperties securityProperties;
+
+    public String execute(Authentication authentication) {
+        Instant now = Instant.now();
+        Long expiry = this.securityProperties.getToken().getExpiryInSeconds();
+        Instant expiryAt = now.plusSeconds(expiry);
+
+        String scope = authentication
+                .getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.
+                        joining(" ")
+                );
+
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer(this.securityProperties.getToken().getIssuer())
+                .issuedAt(now)
+                .expiresAt(expiryAt)
+                .subject(authentication.getName())
+                .claim("scope", scope)
+                .build();
+
+        return jwtEncoder.encode(
+                JwtEncoderParameters.from(claims)
+        ).getTokenValue();
+    }
+}

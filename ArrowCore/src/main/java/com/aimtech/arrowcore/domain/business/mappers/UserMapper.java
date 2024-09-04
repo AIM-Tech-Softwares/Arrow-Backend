@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+
+    @Mapping(target = "profile", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "lastLogin", ignore = true)
     @Mapping(target = "internalId", ignore = true)

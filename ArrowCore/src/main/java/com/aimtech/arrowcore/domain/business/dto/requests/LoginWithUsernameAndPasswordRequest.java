@@ -1,6 +1,5 @@
 package com.aimtech.arrowcore.domain.business.dto.requests;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,11 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterRequest {
+public class LoginWithUsernameAndPasswordRequest {
 
-    private String firstName;
-    private String lastName;
     private String username;
-    private Boolean isActive;
-
+    private String password;
 }

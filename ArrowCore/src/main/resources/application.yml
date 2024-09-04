@@ -16,3 +16,12 @@ spring:
 #        connection:
 #          provider_disables_autocommit: true
 #          provider_class: com.seuprojeto.config.SchemaAwareConnectionProvider
+
+arrowcore:
+  security:
+    key:
+      private-key: classpath:keys/app.key
+      public-key: classpath:keys/app.pub
+    token:
+      expiry-in-seconds: 3600
+      issuer: arrow-core-microservice
