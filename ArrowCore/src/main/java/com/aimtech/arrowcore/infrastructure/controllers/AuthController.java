@@ -4,6 +4,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.LoginWithUsernameAndPa
 import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
 import com.aimtech.arrowcore.domain.business.usecases.auth_module.LoginWithUsernameAndPasswordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,6 @@ public class AuthController {
             @RequestBody LoginWithUsernameAndPasswordRequest request
     ) {
         LoginWithUsernameAndPasswordResponse result = this.loginWithUsernameAndPasswordService.execute(request);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

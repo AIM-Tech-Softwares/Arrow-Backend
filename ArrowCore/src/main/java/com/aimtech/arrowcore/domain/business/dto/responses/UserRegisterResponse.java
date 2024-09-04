@@ -13,5 +13,4 @@ public class UserRegisterResponse {
 
     private String firstName;
     private String externalId;
-    private Long internalId;
 }

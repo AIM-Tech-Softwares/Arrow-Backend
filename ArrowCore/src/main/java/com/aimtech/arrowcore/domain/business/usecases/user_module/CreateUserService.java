@@ -34,7 +34,7 @@ public class CreateUserService {
             );
         }
         User user = userMapper.toUser(dto);
-        Profile profile = profileRepository.findById(1L).orElseThrow(
+        Profile profile = profileRepository.findById(2L).orElseThrow(
                 () -> new RuntimeException("Entity not found")
         );
         BusinessGroup businessGroup = businessGroupRepository.findById(1L).orElseThrow(
@@ -46,7 +46,8 @@ public class CreateUserService {
 
         user.setProfile(profile);
         user.setBusinessGroup(businessGroup);
-        userRepository.save(user);
-        return null;
+        user = userRepository.save(user);
+
+        return userMapper.toResponse(user);
     }
 }
