@@ -5,6 +5,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.LoginWithUsernameAndPa
 import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
+import com.aimtech.arrowcore.infrastructure.exceptions.UsernameOrPasswordInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,10 +25,10 @@ public class LoginWithUsernameAndPasswordService {
     @Transactional
     public LoginWithUsernameAndPasswordResponse execute(LoginWithUsernameAndPasswordRequest request) {
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow(
-                () -> new RuntimeException("Invalid username or password")
+                () -> new UsernameOrPasswordInvalidException("Invalid username or password")
         );
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new UsernameOrPasswordInvalidException("Invalid username or password");
         }
 
         String token = this.generateJwtTokenService.execute(

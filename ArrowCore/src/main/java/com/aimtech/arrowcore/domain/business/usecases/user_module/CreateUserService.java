@@ -10,6 +10,7 @@ import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.BusinessGroupRepository;
 import com.aimtech.arrowcore.domain.repository.ProfileRepository;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
+import com.aimtech.arrowcore.infrastructure.exceptions.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class CreateUserService {
 
     @Transactional
     public UserRegisterResponse execute(UserRegisterRequest dto) {
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            throw new UsernameAlreadyExistsException(
+                    String.format("Username with e-mail: '%s', already exists", dto.getUsername())
+            );
+        }
         User user = userMapper.toUser(dto);
         Profile profile = profileRepository.findById(1L).orElseThrow(
                 () -> new RuntimeException("Entity not found")
