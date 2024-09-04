@@ -4,10 +4,14 @@ import com.aimtech.arrowcore.core.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,23 +53,32 @@ public class User implements UserDetails {
     private BusinessGroup businessGroup;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_id", referencedColumnName = "internal_id")
-    private Profile profile;
+    @ManyToMany
+    @JoinTable(
+            name = "tb_user_profile",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id")
+    )
+    private Set<Profile> profiles = new HashSet<>();
 
 
     public boolean hasRole(String roleName) {
-        for (Role role : profile.getRoles()) {
-            if (role.getAuthority().equals(roleName)) {
-                return true;
+        for (Profile profile : profiles) {
+            for (Role role : profile.getRoles()) {
+                if (role.getAuthority().equals(roleName)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.profile.getRoles();
+    public Collection<GrantedAuthority> getAuthorities() {
+        return this.getProfiles().stream()
+                .flatMap(profile -> profile.getRoles().stream())
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority().toUpperCase()))
+                .collect(Collectors.toSet());
     }
 
     // # TODO: Implementar a lógica para tratar esses casos

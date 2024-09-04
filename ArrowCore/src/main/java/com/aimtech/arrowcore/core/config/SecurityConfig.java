@@ -13,11 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -45,9 +44,24 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(
+        String audience = this.securityProperties.getToken().getAudience();
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(
                 this.securityProperties.getKey().getPublicKey()
         ).build();
+
+        jwtDecoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(
+                this.securityProperties.getToken().getIssuer()
+        ));
+
+        jwtDecoder.setJwtValidator((jwt) -> {
+            List<String> audiences = jwt.getAudience();
+            if (!audiences.contains(audience)) {
+                throw new JwtException("Invalid audience: " + audience);
+            }
+            return null;
+        });
+
+        return jwtDecoder;
     }
 
     @Bean

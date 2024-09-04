@@ -12,9 +12,9 @@ import java.util.Objects;
 
 @UtilityClass
 public class ResourceUriHelper {
-    public static void addUriInResponseHeader(Object resourceId, String pathParameter) {
+    public static void addUriInResponseHeader(Object resourceId) {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{" + pathParameter + "}")
+                .path("/{id}")
                 .buildAndExpand(resourceId).toUri();
 
         HttpServletResponse response = ((ServletRequestAttributes)
@@ -22,9 +22,5 @@ public class ResourceUriHelper {
 
         assert response != null;
         response.setHeader(HttpHeaders.LOCATION, uri.toString());
-    }
-
-    public static void addUriInResponseHeader(Object resourceId) {
-        addUriInResponseHeader(resourceId, "externalId");
     }
 }

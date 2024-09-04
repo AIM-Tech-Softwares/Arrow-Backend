@@ -8,11 +8,13 @@ import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameOrPasswordInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
+import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +34,8 @@ public class LoginWithUsernameAndPasswordService {
         }
 
         String token = this.generateJwtTokenService.execute(
-                new UsernamePasswordAuthenticationToken(user, request.getPassword())
+                new UsernamePasswordAuthenticationToken(user, request.getPassword(), user.getAuthorities()),
+                user.getBusinessGroup()
         );
         OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime expiryAt = now.plusSeconds(this.securityProperties.getToken().getExpiryInSeconds());

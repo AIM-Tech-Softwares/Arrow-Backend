@@ -29,5 +29,6 @@ public class SecurityProperties {
     public static class TokenProps {
         private Long expiryInSeconds;
         private String issuer;
+        private String audience;
     }
 }

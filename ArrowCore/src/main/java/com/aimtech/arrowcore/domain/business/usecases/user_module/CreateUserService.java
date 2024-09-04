@@ -44,7 +44,6 @@ public class CreateUserService {
         user.setExternalId(IdGenerator.generateExternalId());
         user.setPassword(passwordEncoder.encode("123456789"));
 
-        user.setProfile(profile);
         user.setBusinessGroup(businessGroup);
         user = userRepository.save(user);
 

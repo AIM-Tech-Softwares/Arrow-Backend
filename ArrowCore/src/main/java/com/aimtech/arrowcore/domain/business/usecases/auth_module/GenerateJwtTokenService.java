@@ -2,6 +2,7 @@ package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
 import com.aimtech.arrowcore.core.properties.SecurityProperties;
 import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
+import com.aimtech.arrowcore.domain.entities.BusinessGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,10 +23,12 @@ public class GenerateJwtTokenService {
     private final JwtEncoder jwtEncoder;
     private final SecurityProperties securityProperties;
 
-    public String execute(Authentication authentication) {
+    public String execute(Authentication authentication, BusinessGroup businessGroup) {
         Instant now = Instant.now();
         Long expiry = this.securityProperties.getToken().getExpiryInSeconds();
         Instant expiryAt = now.plusSeconds(expiry);
+        List<String> audience = new ArrayList<>();
+        audience.add(this.securityProperties.getToken().getAudience());
 
         String scope = authentication
                 .getAuthorities().stream()
@@ -37,6 +42,8 @@ public class GenerateJwtTokenService {
                 .issuedAt(now)
                 .expiresAt(expiryAt)
                 .subject(authentication.getName())
+                .audience(audience)
+                .claim("tenant", businessGroup.getTenantDomain())
                 .claim("scope", scope)
                 .build();
 

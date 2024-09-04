@@ -25,3 +25,4 @@ arrowcore:
     token:
       expiry-in-seconds: 3600
       issuer: arrow-core-microservice
+      audience: arrow-system
