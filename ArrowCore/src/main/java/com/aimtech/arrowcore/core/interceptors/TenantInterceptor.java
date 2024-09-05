@@ -36,7 +36,7 @@ public class TenantInterceptor implements HandlerInterceptor {
             return AuthUtils.getUserTenant();
         } else {
             return Optional.ofNullable(request.getHeader("tenant"))
-                    .map(String::toUpperCase).toString();
+                    .map(String::toUpperCase).orElse("public");
         }
     }
 }

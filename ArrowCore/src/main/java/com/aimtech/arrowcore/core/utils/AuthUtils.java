@@ -10,7 +10,10 @@ public class AuthUtils {
 
     public static String getUserTenant() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-        return jwtPrincipal.getClaim("tenant");
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwtPrincipal) {
+            return jwtPrincipal.getClaim("tenant");
+        } else {
+            return null;
+        }
     }
 }

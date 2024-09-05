@@ -10,12 +10,13 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
 
+
     @Mapping(target = "profiles", ignore = true)
-    @Mapping(target = "password", ignore = true)
     @Mapping(target = "lastLogin", ignore = true)
     @Mapping(target = "internalId", ignore = true)
     @Mapping(target = "externalId", ignore = true)
     @Mapping(target = "businessGroup", ignore = true)
+    @Mapping(target = "password", ignore = true)
     User toUser(UserRegisterRequest dto);
 
     UserRegisterResponse toResponse(User user);
