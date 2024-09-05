@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataInitializationService {
     private final AppProperties appProperties;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void seedRolesPublic(JdbcTemplate jdbcTemplate) {
@@ -158,6 +160,60 @@ public class DataInitializationService {
         }
     }
 
+    @Transactional
+    public void replicateBusinessGroupToSchemas(JdbcTemplate jdbcTemplate) {
+        try {
+            List<String> tenantSchemas = getTenantSchemas(jdbcTemplate);
+            for (String currentSchema : tenantSchemas) {
+                BusinessGroupData businessGroupData = getBusinessGroupData(jdbcTemplate, currentSchema);
+
+                if (businessGroupData != null) {
+                    if (businessGroupExistsInSchema(jdbcTemplate, currentSchema)) {
+                        updateBusinessGroupInSchema(jdbcTemplate, currentSchema, businessGroupData);
+                    } else {
+                        insertBusinessGroupInSchema(jdbcTemplate, currentSchema, businessGroupData);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    public void seedDefaultUser(JdbcTemplate jdbcTemplate) {
+        try {
+            String defaultSchemaName = this.appProperties.getDefaultValues().getDefaultSchemaName();
+            BusinessGroupData businessGroupData = getBusinessGroupDataFromSchema(jdbcTemplate, defaultSchemaName);
+            if (businessGroupData != null) {
+                System.out.println(businessGroupData.getInternalId());
+                insertDefaultUser(jdbcTemplate, defaultSchemaName, businessGroupData.getInternalId());
+            } else {
+                throw new RuntimeException("businessGroup is null from schema: " + defaultSchemaName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    public void seedDefaultUserToSchemas(JdbcTemplate jdbcTemplate) {
+        try {
+            List<String> tenantSchemas = getTenantSchemas(jdbcTemplate);
+            for (String schema : tenantSchemas) {
+                BusinessGroupData businessGroupData = getBusinessGroupDataFromSchema(jdbcTemplate, schema);
+                if (businessGroupData != null) {
+                    insertDefaultUser(jdbcTemplate, schema, businessGroupData.getInternalId());
+                } else {
+                    throw new RuntimeException("businessGroup is null from schema: " + schema);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void insertProfile(JdbcTemplate jdbcTemplate, String scheme) {
         String profileName = this.appProperties.getDefaultValues().getAdminProfileName();
         String description = this.appProperties.getDefaultValues().getAdminProfileDescription();
@@ -209,6 +265,109 @@ public class DataInitializationService {
         return jdbcTemplate.queryForList(query, String.class);
     }
 
+    private BusinessGroupData getBusinessGroupData(JdbcTemplate jdbcTemplate, String schema) {
+        String defaultSchemaName = this.appProperties.getDefaultValues().getDefaultSchemaName();
+        String query = String.format(
+                "SELECT internal_id, external_id, public_name, tenant_domain, schema_name FROM %s.tb_business_group WHERE schema_name = ?",
+                defaultSchemaName
+        );
+
+        List<BusinessGroupData> results = jdbcTemplate.query(query, ps -> ps.setString(1, schema),
+                (rs, rowNum) ->
+                        new BusinessGroupData(
+                                rs.getString("internal_id"),
+                                rs.getString("external_id"),
+                                rs.getString("public_name"),
+                                rs.getString("tenant_domain"),
+                                rs.getString("schema_name")
+                        )
+        );
+        return results.isEmpty() ? null : results.getFirst();
+    }
+
+    private BusinessGroupData getBusinessGroupDataFromSchema(JdbcTemplate jdbcTemplate, String schema) {
+        String query = String.format(
+                "SELECT internal_id, external_id, public_name, tenant_domain, schema_name FROM %s.tb_business_group WHERE schema_name = ?",
+                schema
+        );
+
+        List<BusinessGroupData> results = jdbcTemplate.query(query, ps -> ps.setString(1, schema),
+                (rs, rowNum) ->
+                        new BusinessGroupData(
+                                rs.getString("internal_id"),
+                                rs.getString("external_id"),
+                                rs.getString("public_name"),
+                                rs.getString("tenant_domain"),
+                                rs.getString("schema_name")
+                        )
+        );
+        return results.isEmpty() ? null : results.getFirst();
+    }
+
+    private boolean businessGroupExistsInSchema(JdbcTemplate jdbcTemplate, String schemaName) {
+        String query = String.format(
+                "SELECT COUNT(*) FROM %s.tb_business_group WHERE schema_name = ?",
+                schemaName
+        );
+        Integer count = jdbcTemplate.queryForObject(query, Integer.class, schemaName);
+        return count != null && count > 0;
+    }
+
+    private void updateBusinessGroupInSchema(JdbcTemplate jdbcTemplate, String schema, BusinessGroupData businessGroupData) {
+        String updateQuery = String.format(
+                "UPDATE %s.tb_business_group SET public_name = ?, tenant_domain = ?, schema_name = ? WHERE external_id = ?",
+                schema
+        );
+        jdbcTemplate.update(
+                updateQuery,
+                businessGroupData.getPublicName(),
+                businessGroupData.getTenantDomain(),
+                businessGroupData.getSchemaName(),
+                businessGroupData.getExternalId()
+        );
+    }
+
+    private void insertBusinessGroupInSchema(JdbcTemplate jdbcTemplate, String schema, BusinessGroupData businessGroupData) {
+        String insertQuery = String.format(
+                "INSERT INTO %s.tb_business_group (external_id, public_name, tenant_domain, schema_name) VALUES (?, ?, ?, ?)",
+                schema
+        );
+        jdbcTemplate.update(
+                insertQuery,
+                businessGroupData.getExternalId(),
+                businessGroupData.getPublicName(),
+                businessGroupData.getTenantDomain(),
+                businessGroupData.getSchemaName()
+        );
+    }
+
+    private void insertDefaultUser(JdbcTemplate jdbcTemplate, String schema, String businessGroupInternalId) {
+        String externalId = IdGenerator.generateExternalId();
+        String firstName = this.appProperties.getDefaultValues().getAdminFirstName();
+        String lastName = this.appProperties.getDefaultValues().getAdminLastName();
+        String username = this.appProperties.getDefaultValues().getAdminUsername();
+        String password = passwordEncoder.encode(this.appProperties.getDefaultValues().getAdminPassword());
+        boolean isActive = true;
+        boolean isFirstLogin = true;
+
+        String query = String.format(
+                """ 
+                    INSERT INTO %s.tb_user
+                    (external_id, first_name, last_name, username, password, is_active, is_first_login, business_group)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ON CONFLICT (username) DO NOTHING
+                """,
+                schema
+        );
+        jdbcTemplate.update(
+                query, externalId,
+                firstName, lastName,
+                username, password,
+                isActive, isFirstLogin,
+                Long.parseLong(businessGroupInternalId)
+        );
+    }
+
     @Getter
     private static class RoleData {
         private final String authority;
@@ -219,6 +378,31 @@ public class DataInitializationService {
             this.authority = authority;
             this.roleInterfaceDescription = roleInterfaceDescription;
             this.roleInterfaceName = roleInterfaceName;
+        }
+    }
+
+    @Getter
+    private static class BusinessGroupData {
+        private final String internalId;
+        private final String externalId;
+        private final String publicName;
+        private final String tenantDomain;
+        private final String schemaName;
+
+        public BusinessGroupData(String internalId, String externalId, String publicName, String tenantDomain, String schemaName) {
+            this.internalId = internalId;
+            this.externalId = externalId;
+            this.publicName = publicName;
+            this.tenantDomain = tenantDomain;
+            this.schemaName = schemaName;
+        }
+
+        public BusinessGroupData(String externalId, String publicName, String tenantDomain, String schemaName) {
+            this.internalId = null;
+            this.externalId = externalId;
+            this.publicName = publicName;
+            this.tenantDomain = tenantDomain;
+            this.schemaName = schemaName;
         }
     }
 }

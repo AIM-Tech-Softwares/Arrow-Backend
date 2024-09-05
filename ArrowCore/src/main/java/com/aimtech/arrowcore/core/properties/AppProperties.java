@@ -17,6 +17,10 @@ public class AppProperties {
     public static class DefaultValues {
         private String adminProfileName;
         private String adminProfileDescription;
+        private String adminFirstName;
+        private String adminLastName;
+        private String adminUsername;
+        private String adminPassword;
         private String defaultSchemaName;
     }
 }

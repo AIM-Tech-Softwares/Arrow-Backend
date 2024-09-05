@@ -25,6 +25,10 @@ arrowcore:
       default-schema-name: public
       admin-profile-name: Administrador
       admin-profile-description: Perfil de administrador do sistema gerado automáticamente
+      admin-first-name: Admin
+      admin-last-name: AIM Tech
+      admin-password: mudar123
+      admin-username: admin@aimtech.com.br
   security:
     key:
       private-key: classpath:keys/app.key

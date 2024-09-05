@@ -48,6 +48,9 @@ public class User implements UserDetails {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
+    @Column(name = "is_first_login", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private boolean isFirstLogin = true;
+
     @ManyToOne
     @JoinColumn(name = "business_group")
     private BusinessGroup businessGroup;

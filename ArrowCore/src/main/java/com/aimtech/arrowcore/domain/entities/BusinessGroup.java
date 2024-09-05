@@ -29,7 +29,7 @@ public class BusinessGroup {
     @Column(name = "tenant_domain", nullable = false)
     private String tenantDomain;
 
-    @Column(name = "schema_name")
+    @Column(name = "schema_name", nullable = false, unique = true)
     private String schemaName;
 
     @OneToMany(mappedBy = "businessGroup")

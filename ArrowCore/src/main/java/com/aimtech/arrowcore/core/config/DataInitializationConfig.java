@@ -18,10 +18,13 @@ public class DataInitializationConfig {
             this.dataInitializationService.seedRolesPublic(jdbcTemplate);
             this.dataInitializationService.seedProfilePublic(jdbcTemplate);
             this.dataInitializationService.seedProfileAdminRoles(jdbcTemplate);
+            this.dataInitializationService.seedDefaultUser(jdbcTemplate);
 
             this.dataInitializationService.replicateRolesToSchemas(jdbcTemplate);
             this.dataInitializationService.seedProfileToSchemas(jdbcTemplate);
             this.dataInitializationService.seedProfileAdminRolesToSchemas(jdbcTemplate);
+            this.dataInitializationService.replicateBusinessGroupToSchemas(jdbcTemplate);
+            this.dataInitializationService.seedDefaultUserToSchemas(jdbcTemplate);
         };
     }
 
