@@ -186,7 +186,6 @@ public class DataInitializationService {
             String defaultSchemaName = this.appProperties.getDefaultValues().getDefaultSchemaName();
             BusinessGroupData businessGroupData = getBusinessGroupDataFromSchema(jdbcTemplate, defaultSchemaName);
             if (businessGroupData != null) {
-                System.out.println(businessGroupData.getInternalId());
                 insertDefaultUser(jdbcTemplate, defaultSchemaName, businessGroupData.getInternalId());
             } else {
                 throw new RuntimeException("businessGroup is null from schema: " + defaultSchemaName);
@@ -212,6 +211,43 @@ public class DataInitializationService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Transactional
+    public void associateAdminUserWithAdminProfile(JdbcTemplate jdbcTemplate) {
+        try {
+            String defaultSchemaName = appProperties.getDefaultValues().getDefaultSchemaName();
+            String defaultAdminUsername = appProperties.getDefaultValues().getAdminUsername();
+            String defaultAdminProfileName = appProperties.getDefaultValues().getAdminProfileName();
+            Long adminUserId = getUserIdByUsername(jdbcTemplate, defaultAdminUsername, defaultSchemaName);
+            Long adminProfileId = getProfileIdByName(jdbcTemplate, defaultAdminProfileName, defaultSchemaName);
+
+            if (adminUserId != null && adminProfileId != null) {
+                insertUserProfile(jdbcTemplate, adminUserId, adminProfileId, defaultSchemaName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    public void associateAdminUserWithAdminProfileToSchemas(JdbcTemplate jdbcTemplate) {
+        try {
+            List<String> tenantSchemas = getTenantSchemas(jdbcTemplate);
+            String defaultAdminUsername = appProperties.getDefaultValues().getAdminUsername();
+            String defaultAdminProfileName = appProperties.getDefaultValues().getAdminProfileName();
+            for (String schema : tenantSchemas) {
+                Long adminUserId = getUserIdByUsername(jdbcTemplate, defaultAdminUsername, schema);
+                Long adminProfileId = getProfileIdByName(jdbcTemplate, defaultAdminProfileName, schema);
+
+                if (adminUserId != null && adminProfileId != null) {
+                    insertUserProfile(jdbcTemplate, adminUserId, adminProfileId, schema);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void insertProfile(JdbcTemplate jdbcTemplate, String scheme) {
@@ -366,6 +402,39 @@ public class DataInitializationService {
                 isActive, isFirstLogin,
                 Long.parseLong(businessGroupInternalId)
         );
+    }
+
+    private Long getUserIdByUsername(JdbcTemplate jdbcTemplate, String username, String schema) {
+        String query = String.format("SELECT internal_id FROM %s.tb_user WHERE username = ?", schema);
+        try {
+            return jdbcTemplate.queryForObject(query, Long.class, username);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException(
+                    String.format(
+                            "Username: '%s' not found in schema: '%s'",
+                            username, schema
+                    )
+            );
+        }
+    }
+
+    private Long getProfileIdByName(JdbcTemplate jdbcTemplate, String profileName, String schema) {
+        String query = String.format("SELECT internal_id FROM %s.tb_profile WHERE profile_name = ?", schema);
+        try {
+            return jdbcTemplate.queryForObject(query, Long.class, profileName);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException(
+                    String.format(
+                            "Profile: '%s' not found in schema: '%s'",
+                            profileName, schema
+                    )
+            );
+        }
+    }
+
+    private void insertUserProfile(JdbcTemplate jdbcTemplate, Long userId, Long profileId, String schema) {
+        String query = String.format("INSERT INTO %s.tb_user_profile (user_id, profile_id) VALUES (?, ?) ON CONFLICT DO NOTHING", schema);
+        jdbcTemplate.update(query, userId, profileId);
     }
 
     @Getter
