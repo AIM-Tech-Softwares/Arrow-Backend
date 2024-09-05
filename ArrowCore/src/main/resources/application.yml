@@ -13,10 +13,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         show_sql: true
         ddl-auto: none
-#        connection:
-#          provider_disables_autocommit: true
-#          provider_class: com.seuprojeto.config.SchemaAwareConnectionProvider
-
+  flyway:
+    enabled: true
+    schemas: public
+    locations: classpath:db/migration
+    placeholders:
+      schema: public
 arrowcore:
   security:
     key:
