@@ -64,6 +64,9 @@ public class User implements UserDetails {
     )
     private Set<Profile> profiles = new HashSet<>();
 
+    public void addProfile(Profile profile) {
+        this.profiles.add(profile);
+    }
 
     public boolean hasRole(String roleName) {
         for (Profile profile : profiles) {

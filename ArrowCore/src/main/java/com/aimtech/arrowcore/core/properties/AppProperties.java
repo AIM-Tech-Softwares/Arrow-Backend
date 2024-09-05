@@ -22,5 +22,6 @@ public class AppProperties {
         private String adminUsername;
         private String adminPassword;
         private String defaultSchemaName;
+        private Integer minimumPasswordLength;
     }
 }

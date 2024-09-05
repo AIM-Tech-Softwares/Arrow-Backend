@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,5 +18,5 @@ public class UserRegisterRequest {
     private String lastName;
     private String username;
     private Boolean isActive;
-
+    private List<Long> profileIds;
 }

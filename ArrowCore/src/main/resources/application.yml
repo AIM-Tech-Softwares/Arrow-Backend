@@ -27,8 +27,9 @@ arrowcore:
       admin-profile-description: Perfil de administrador do sistema gerado automáticamente
       admin-first-name: Admin
       admin-last-name: AIM Tech
-      admin-password: mudar123
       admin-username: admin@aimtech.com.br
+      admin-password: mudar123
+      minimum-password-length: 8
   security:
     key:
       private-key: classpath:keys/app.key

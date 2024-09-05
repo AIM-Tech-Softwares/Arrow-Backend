@@ -1,5 +1,6 @@
 package com.aimtech.arrowcore.infrastructure.controllers;
 
+import com.aimtech.arrowcore.core.annotation.CheckSecurity;
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.UserRegisterRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.UserRegisterResponse;
@@ -17,6 +18,7 @@ public class UserController {
     private final CreateUserService createUserService;
 
     @PostMapping
+    @CheckSecurity.User.CanCreate
     public ResponseEntity<Void> registerUser(@RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = this.createUserService.execute(request);
 

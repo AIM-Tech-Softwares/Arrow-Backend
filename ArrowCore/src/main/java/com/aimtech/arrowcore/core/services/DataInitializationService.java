@@ -25,7 +25,7 @@ public class DataInitializationService {
     public void seedRolesPublic(JdbcTemplate jdbcTemplate) {
         try {
             List<String> existingRoles = jdbcTemplate.queryForList("SELECT authority FROM tb_role", String.class);
-            List<String> desiredRoles = Arrays.stream(RoleEnum.values()).map(Enum::name).toList();
+            List<String> desiredRoles = Arrays.stream(RoleEnum.values()).map(RoleEnum::getRoleName).toList();
 
             List<String> rolesToInsert = new ArrayList<>(desiredRoles);
             rolesToInsert.removeAll(existingRoles);

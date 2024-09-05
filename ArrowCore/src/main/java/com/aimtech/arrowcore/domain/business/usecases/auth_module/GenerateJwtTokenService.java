@@ -43,7 +43,7 @@ public class GenerateJwtTokenService {
                 .expiresAt(expiryAt)
                 .subject(authentication.getName())
                 .audience(audience)
-                .claim("tenant", businessGroup.getTenantDomain())
+                .claim("tenant", businessGroup.getSchemaName())
                 .claim("scope", scope)
                 .build();
 
