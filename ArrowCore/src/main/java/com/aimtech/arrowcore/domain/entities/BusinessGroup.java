@@ -29,6 +29,9 @@ public class BusinessGroup {
     @Column(name = "tenant_domain", nullable = false)
     private String tenantDomain;
 
+    @Column(name = "schema_name")
+    private String schemaName;
+
     @OneToMany(mappedBy = "businessGroup")
     private List<User> users;
 }

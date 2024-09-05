@@ -24,7 +24,10 @@ public class Profile {
     @Column(nullable = false, unique = true, name = "external_id")
     private String externalId = IdGenerator.generateExternalId();
 
-    @Column(nullable = false, name = "description")
+    @Column(nullable = false, name = "profile_name", unique = true)
+    private String profileName;
+
+    @Column(name = "description")
     private String description;
 
     @Column(nullable = false, name = "is_active")

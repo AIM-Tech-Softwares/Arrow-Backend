@@ -24,5 +24,10 @@ public class Role implements GrantedAuthority {
     @Column(name = "authority", nullable = false, unique = true)
     private String authority;
 
+    @Column(name = "role_interface_name")
+    private String roleInterfaceName;
+
+    @Column(name = "role_interface_description")
+    private String roleInterfaceDescription;
 
 }
