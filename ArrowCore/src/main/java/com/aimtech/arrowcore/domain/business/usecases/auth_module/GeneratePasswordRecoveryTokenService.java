@@ -57,7 +57,7 @@ public class GeneratePasswordRecoveryTokenService {
             logger.info("Generated token: " + redirectUrl);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 
