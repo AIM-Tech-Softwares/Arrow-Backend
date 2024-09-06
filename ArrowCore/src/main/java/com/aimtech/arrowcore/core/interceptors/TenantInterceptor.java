@@ -6,6 +6,8 @@ import com.aimtech.arrowcore.infrastructure.exceptions.InvalidPasswordRecoverTok
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,6 +20,8 @@ import java.util.regex.Pattern;
 @Component
 @RequiredArgsConstructor
 public class TenantInterceptor implements HandlerInterceptor {
+    private final MessageSource messageSource;
+
     private static final Pattern URL_PATTERN_RECOVERY_PASSWORD_TOKEN = Pattern.compile("/auth/recovery-password/([^/]+)/([^/]+)");
 
     @Override
@@ -60,6 +64,12 @@ public class TenantInterceptor implements HandlerInterceptor {
         if (matcher.find()) {
             return matcher.group(1);
         }
-        throw new InvalidPasswordRecoverTokenException("Invalid password recover token");
+        throw new InvalidPasswordRecoverTokenException(
+                messageSource.getMessage(
+                        "arrowcore.exceptions.InvalidPasswordRecoverTokenException",
+                        null,
+                        LocaleContextHolder.getLocale()
+                )
+        );
     }
 }

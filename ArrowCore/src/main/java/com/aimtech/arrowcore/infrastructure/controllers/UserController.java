@@ -5,6 +5,7 @@ import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.UserRegisterRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.UserRegisterResponse;
 import com.aimtech.arrowcore.domain.business.usecases.user_module.CreateUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +20,10 @@ public class UserController {
 
     @PostMapping
     @CheckSecurity.User.CanCreate
-    public ResponseEntity<Void> registerUser(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         UserRegisterResponse response = this.createUserService.execute(request);
 
         ResourceUriHelper.addUriInResponseHeader(response.getExternalId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.status(HttpStatus.OK).body("teste");
     }
 }

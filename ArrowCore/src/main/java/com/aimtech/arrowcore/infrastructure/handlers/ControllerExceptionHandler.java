@@ -2,11 +2,10 @@ package com.aimtech.arrowcore.infrastructure.handlers;
 
 import com.aimtech.arrowcore.domain.business.dto.responses.errors.CustomErrorResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.errors.ValidationErrorResponse;
-import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;
-import com.aimtech.arrowcore.infrastructure.exceptions.UsernameAlreadyExistsException;
-import com.aimtech.arrowcore.infrastructure.exceptions.UsernameOrPasswordInvalidException;
+import com.aimtech.arrowcore.infrastructure.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -38,6 +37,28 @@ public class ControllerExceptionHandler {
     public ResponseEntity<CustomErrorResponse> usernameAlreadyExistsExceptionHandler(UsernameAlreadyExistsException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidTenantDomainException.class)
+    public ResponseEntity<CustomErrorResponse> invalidTenantDomainExceptionHandler(InvalidTenantDomainException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidPasswordRecoverTokenException.class)
+    public ResponseEntity<CustomErrorResponse> invalidPasswordRecoverTokenExceptionHandler(InvalidPasswordRecoverTokenException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
+    public ResponseEntity<CustomErrorResponse> invalidDataAccessResourceUsageException(InvalidDataAccessResourceUsageException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.PRECONDITION_FAILED;
+        String customMessageException = "Please contact our support team for more information.";
+        CustomErrorResponse err = getCustomError(status, customMessageException, request);
         return ResponseEntity.status(status).body(err);
     }
 
