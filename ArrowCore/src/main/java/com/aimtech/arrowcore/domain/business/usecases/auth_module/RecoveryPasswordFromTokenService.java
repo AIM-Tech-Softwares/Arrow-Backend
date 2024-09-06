@@ -44,7 +44,7 @@ public class RecoveryPasswordFromTokenService {
 
         passwordRecover.setUsedAt(OffsetDateTime.now());
         passwordRecoveryRepository.save(passwordRecover);
-        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
 }

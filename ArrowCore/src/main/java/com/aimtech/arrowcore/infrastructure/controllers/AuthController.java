@@ -8,6 +8,7 @@ import com.aimtech.arrowcore.domain.business.usecases.auth_module.GeneratePasswo
 import com.aimtech.arrowcore.domain.business.usecases.auth_module.LoginWithUsernameAndPasswordService;
 import com.aimtech.arrowcore.domain.business.usecases.auth_module.RecoveryPasswordFromTokenService;
 import com.aimtech.arrowcore.domain.entities.PasswordRecover;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class AuthController {
     public ResponseEntity<Void> setNewPassword(
             @PathVariable String tenant,
             @PathVariable String token,
-            @RequestBody RecoveryPasswordFromTokenRequest request
+            @RequestBody @Valid RecoveryPasswordFromTokenRequest request
     ) {
         recoveryPasswordFromTokenService.execute(token, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
