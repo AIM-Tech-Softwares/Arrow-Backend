@@ -38,7 +38,7 @@ arrowcore:
       minimum-password-length: 8
       recovery-token:
         expiry-in-seconds: ${PASSWORD_RECOVER_EXPIRATION_TOKEN_SECONDS:1800}
-        redirect-uri: ${PASSWORD_RECOVER_REDIRECT_URI:http://localhost:5173/recover-passwords}
+        redirect-uri: ${PASSWORD_RECOVER_REDIRECT_URI:http://localhost:5173/recover-password}
   security:
     key:
       private-key: classpath:keys/app.key

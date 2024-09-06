@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -41,5 +42,18 @@ public class Profile {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return Objects.equals(internalId, profile.internalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(internalId);
     }
 }

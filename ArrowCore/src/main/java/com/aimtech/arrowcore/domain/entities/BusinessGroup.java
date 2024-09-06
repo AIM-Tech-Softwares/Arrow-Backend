@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -34,4 +35,17 @@ public class BusinessGroup {
 
     @OneToMany(mappedBy = "businessGroup")
     private List<User> users;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BusinessGroup that = (BusinessGroup) o;
+        return Objects.equals(internalId, that.internalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(internalId);
+    }
 }

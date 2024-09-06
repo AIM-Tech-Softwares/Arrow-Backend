@@ -30,7 +30,7 @@ public class GeneratePasswordRecoveryTokenService {
     private final PasswordUtils passwordUtils;
     private final FindBusinessGroupByUsernameDomainService findBusinessGroupByUsernameDomainService;
 
-    @Transactional(propagation = Propagation.NEVER)
+    @Transactional
     public void execute(RecoveryPasswordRequest request) {
         try {
             Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
@@ -53,9 +53,9 @@ public class GeneratePasswordRecoveryTokenService {
                     .build();
 
             PasswordRecover inserted = passwordRecoveryRepository.save(entity);
-            logger.info("Generated token: " + inserted.getToken());
-
-
+            String redirectUri = this.appProperties.getDefaultValues().getRecoveryToken().getRedirectUri();
+            String redirectUrl = String.format("%s/%s/%s", redirectUri, user.getBusinessGroup().getSchemaName(), inserted.getToken());
+            logger.info("Generated token: " + redirectUrl);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

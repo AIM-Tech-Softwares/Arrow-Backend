@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -34,4 +35,16 @@ public class PasswordRecover {
     @Column(name = "used_at", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime usedAt;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PasswordRecover that = (PasswordRecover) o;
+        return Objects.equals(internalId, that.internalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(internalId);
+    }
 }
