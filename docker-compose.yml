@@ -1,0 +1,19 @@
+services:
+  pg-docker:
+    image: postgres:latest
+    container_name: postgresql-arrow
+    environment:
+      POSTGRES_DB: arrow
+      POSTGRES_PASSWORD: 1234567
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.data/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - arrow-network
+
+
+networks:
+  arrow-network:
+    driver: bridge
+
