@@ -10,10 +10,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@SuppressWarnings("NullableProblems")
 @Component
 @RequiredArgsConstructor
-public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionProvider<String> {
+public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionProvider {
     private static final Logger logger = LoggerFactory.getLogger(MultiTenantConnectionProviderImpl.class);
     private final DataSource dataSource;
 
@@ -28,19 +27,32 @@ public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionP
     }
 
     @Override
-    public Connection getConnection(String tenantIdentifier) throws SQLException {
-        logger.info("Get connection for tenant {}", tenantIdentifier);
-        final Connection connection = getAnyConnection();
-        connection.setSchema(tenantIdentifier.toLowerCase());
+    public Connection getConnection(Object tenantIdentifier) throws SQLException {
+        logger.info("Getting connection for tenant: {}", tenantIdentifier.toString().toLowerCase());
+        Connection connection = getAnyConnection();
+        try {
+            connection.setSchema(tenantIdentifier.toString().toLowerCase());
+            logger.info("Schema set to: {}", tenantIdentifier.toString().toLowerCase());
+        } catch (SQLException e) {
+            logger.error("Error setting schema for tenant {}: {}",
+                    tenantIdentifier.toString().toLowerCase(), e.getMessage());
+            throw new SQLException("Error setting schema: " + e.getMessage(), e);
+        }
         return connection;
     }
 
     @Override
-    public void releaseConnection(String tenantIdentifier, Connection connection) throws SQLException {
-        logger.info("Release connection for tenant {}", tenantIdentifier);
-        String DEFAULT_TENANT = "public";
-        connection.setSchema(DEFAULT_TENANT);
-        releaseAnyConnection(connection);
+    public void releaseConnection(Object tenantIdentifier, Connection connection) throws SQLException {
+        try {
+            String DEFAULT_TENANT = "public";
+            connection.setSchema(DEFAULT_TENANT);
+            logger.info("Schema reset to default tenant: {}", DEFAULT_TENANT);
+        } catch (SQLException e) {
+            logger.error("Error resetting schema to default tenant: {}", e.getMessage());
+            logger.error("Error resetting schema to default tenant: {}", e.getMessage());
+        } finally {
+            releaseAnyConnection(connection);
+        }
     }
 
     @Override
@@ -50,7 +62,7 @@ public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionP
 
     @Override
     public boolean isUnwrappableAs(Class aClass) {
-        return false;
+        return aClass.isAssignableFrom(MultiTenantConnectionProvider.class);
     }
 
     @Override

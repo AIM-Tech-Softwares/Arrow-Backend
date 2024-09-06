@@ -4,7 +4,12 @@ import com.aimtech.arrowcore.core.properties.AppProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -14,9 +19,7 @@ public class PasswordUtils {
     private static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
     private static final String DIGITS = "0123456789";
-
     private static final String ALL_CHARS = UPPERCASE_CHARS + LOWERCASE_CHARS + DIGITS;
-
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public String generateRandomPassword(int length) {
@@ -39,6 +42,17 @@ public class PasswordUtils {
         }
 
         return shuffleString(password.toString());
+    }
+
+    public String generateHashedToken(String userId) {
+        try {
+            String combinedData = userId + UUID.randomUUID() + System.currentTimeMillis();
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(combinedData.getBytes(StandardCharsets.UTF_8));
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static String shuffleString(String input) {

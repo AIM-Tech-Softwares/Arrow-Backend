@@ -23,5 +23,13 @@ public class AppProperties {
         private String adminPassword;
         private String defaultSchemaName;
         private Integer minimumPasswordLength;
+        private final PasswordRecoveryToken recoveryToken = new PasswordRecoveryToken();
+    }
+
+    @Getter
+    @Setter
+    public static class PasswordRecoveryToken {
+        private Integer expiryInSeconds;
+        private String redirectUri;
     }
 }

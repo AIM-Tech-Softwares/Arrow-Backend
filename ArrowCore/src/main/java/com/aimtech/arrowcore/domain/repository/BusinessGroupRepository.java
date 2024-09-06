@@ -12,4 +12,6 @@ public interface BusinessGroupRepository extends JpaRepository<BusinessGroup, Lo
 
     @Query("SELECT b.tenantDomain FROM BusinessGroup b JOIN b.users u WHERE u.username = :username")
     Optional<String> searchTenantDomainByUsername(String username);
+
+    Optional<BusinessGroup> findByTenantDomain(String tenantDomain);
 }

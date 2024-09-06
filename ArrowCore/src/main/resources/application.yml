@@ -6,6 +6,12 @@ spring:
     username: postgres
     password: 1234567
     driver-class-name: org.postgresql.Driver
+    hikari:
+      max-lifetime: 1800000
+      idle-timeout: 60000
+      connection-test-query: SELECT 1
+      maximum-pool-size: 500
+      minimum-idle: 30
 
   jpa:
     properties:
@@ -30,6 +36,9 @@ arrowcore:
       admin-username: admin@aimtech.com.br
       admin-password: mudar123
       minimum-password-length: 8
+      recovery-token:
+        expiry-in-seconds: ${PASSWORD_RECOVER_EXPIRATION_TOKEN_SECONDS:1800}
+        redirect-uri: ${PASSWORD_RECOVER_REDIRECT_URI:http://localhost:5173/recover-passwords}
   security:
     key:
       private-key: classpath:keys/app.key

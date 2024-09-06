@@ -29,18 +29,18 @@ public class HibernateConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             DataSource dataSource,
-            MultiTenantConnectionProvider<String> multiTenantConnectionProviderImpl,
-            CurrentTenantIdentifierResolver<String> currentTenantIdentifierResolverImpl
+            MultiTenantConnectionProvider multiTenantConnectionProviderImpl,
+            CurrentTenantIdentifierResolver currentTenantIdentifierResolverImpl
     ) {
-        Map<String, Object> jpaPrpertiesMap = new HashMap<>(jpaProperties.getProperties());
-        jpaPrpertiesMap.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProviderImpl);
-        jpaPrpertiesMap.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, currentTenantIdentifierResolverImpl);
+        Map<String, Object> jpaPropertiesMap = new HashMap<>(jpaProperties.getProperties());
+        jpaPropertiesMap.put(Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProviderImpl);
+        jpaPropertiesMap.put(Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, currentTenantIdentifierResolverImpl);
 
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
         em.setPackagesToScan(jpaPathPackagesToScan);
         em.setJpaVendorAdapter(jpaVendorAdapter());
-        em.setJpaPropertyMap(jpaPrpertiesMap);
+        em.setJpaPropertyMap(jpaPropertiesMap);
         return em;
     }
 }
