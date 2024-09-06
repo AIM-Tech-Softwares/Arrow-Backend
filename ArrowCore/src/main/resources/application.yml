@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: ArrowCore
+  datasource:
+    url: jdbc:postgresql://localhost:5432/arrow
+    username: postgres
+    password: 1234567
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      max-lifetime: 1800000
+      idle-timeout: 60000
+      connection-test-query: SELECT 1
+      maximum-pool-size: 500
+      minimum-idle: 30
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        ddl-auto: none
+  flyway:
+    enabled: true
+    schemas: public
+    locations: classpath:db/migration
+    placeholders:
+      schema: public
+arrowcore:
+  app:
+    default-values:
+      default-schema-name: public
+      admin-profile-name: Administrador
+      admin-profile-description: Perfil de administrador do sistema gerado automáticamente
+      admin-first-name: Admin
+      admin-last-name: AIM Tech
+      admin-username: admin@aimtech.com.br
+      admin-password: mudar123
+      minimum-password-length: 8
+      recovery-token:
+        expiry-in-seconds: ${PASSWORD_RECOVER_EXPIRATION_TOKEN_SECONDS:1800}
+        redirect-uri: ${PASSWORD_RECOVER_REDIRECT_URI:http://localhost:5173/recover-password}
+  security:
+    key:
+      private-key: classpath:keys/app.key
+      public-key: classpath:keys/app.pub
+    token:
+      expiry-in-seconds: 3600
+      issuer: arrow-core-microservice
+      audience: arrow-system
