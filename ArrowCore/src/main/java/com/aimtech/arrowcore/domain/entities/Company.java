@@ -43,6 +43,7 @@ public class Company {
     private String municipalRegistration;
 
     @Column(name = "foundation_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date foundationDate;
 
     @ManyToOne
