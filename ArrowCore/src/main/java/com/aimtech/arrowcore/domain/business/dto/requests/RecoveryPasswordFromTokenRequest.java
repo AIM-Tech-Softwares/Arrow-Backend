@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecoveryPasswordFromTokenRequest {
 
-        @NotBlank(message = "Field is required.")
-        @ValidPassword
+        @NotBlank(message = "{arrowcore.messages.errors.validation.NotBlank}")
+        @ValidPassword(message = "{arrowcore.errors.validation.custom.ValidPassword}")
         private String newPassword;
 }

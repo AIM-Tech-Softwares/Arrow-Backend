@@ -4,10 +4,11 @@ import com.aimtech.arrowcore.core.properties.SecurityProperties;
 import com.aimtech.arrowcore.domain.business.dto.requests.LoginWithUsernameAndPasswordRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
 import com.aimtech.arrowcore.domain.entities.User;
-import com.aimtech.arrowcore.domain.repository.BusinessGroupRepository;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameOrPasswordInvalidException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,23 +20,30 @@ import java.time.OffsetDateTime;
 @RequiredArgsConstructor
 public class LoginWithUsernameAndPasswordService {
     private final UserRepository userRepository;
-    private final BusinessGroupRepository businessGroupRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
     private final GenerateJwtTokenService generateJwtTokenService;
     private final SecurityProperties securityProperties;
 
     @Transactional
     public LoginWithUsernameAndPasswordResponse execute(LoginWithUsernameAndPasswordRequest request) {
-        // Fetch BusinessGroup based on username
-//        String tenantDomain = businessGroupRepository.searchTenantDomainByUsername(request.getUsername()).orElseThrow(
-//                () -> new UsernameNotFoundException("Tenant not found for user: " + request.getUsername())
-//        );
-
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow(
-                () -> new UsernameOrPasswordInvalidException("Invalid username or password")
+                () -> new UsernameOrPasswordInvalidException(
+                        messageSource.getMessage(
+                                "arrowcore.exceptions.UsernameOrPasswordInvalidException",
+                                null,
+                                LocaleContextHolder.getLocale()
+                        )
+                )
         );
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UsernameOrPasswordInvalidException("Invalid username or password");
+            throw new UsernameOrPasswordInvalidException(
+                    messageSource.getMessage(
+                            "arrowcore.exceptions.UsernameOrPasswordInvalidException",
+                            null,
+                            LocaleContextHolder.getLocale()
+                    )
+            );
         }
 
         String token = this.generateJwtTokenService.execute(

@@ -13,6 +13,8 @@ import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,7 @@ public class CreateUserService {
     private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final MessageSource messageSource;
     private final AuthUtils authUtils;
     private final PasswordUtils passwordUtils;
 
@@ -36,7 +40,11 @@ public class CreateUserService {
     public UserRegisterResponse execute(UserRegisterRequest dto) {
         if (userRepository.existsByUsername(dto.getUsername())) {
             throw new UsernameAlreadyExistsException(
-                    String.format("Username with e-mail: '%s', already exists", dto.getUsername())
+                    messageSource.getMessage(
+                            "arrowcore.exceptions.UsernameAlreadyExistsException",
+                            new Object[]{dto.getUsername()},
+                            LocaleContextHolder.getLocale()
+                    )
             );
         }
         User user = userMapper.toUser(dto);
@@ -49,7 +57,11 @@ public class CreateUserService {
         for (Long profileId : dto.getProfileIds()) {
             Profile profile = profileRepository.findById(profileId).orElseThrow(
                     () -> new ResourceNotFoundedException(
-                            "Profile", "id", profileId.toString()
+                            messageSource.getMessage(
+                                    "arrowcore.exceptions.ResourceNotFoundedException",
+                                    new Object[]{"Profile", "ID: " + profileId},
+                                    LocaleContextHolder.getLocale()
+                            )
                     )
             );
             profileList.add(profile);
