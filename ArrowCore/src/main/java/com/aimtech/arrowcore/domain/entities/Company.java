@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class Company {
     private String municipalRegistration;
 
     @Column(name = "foundation_date", nullable = false)
-    private OffsetTime foundationDate;
+    private Date foundationDate;
 
     @ManyToOne
     @JoinColumn(name = "tax_regime_id", nullable = false)
@@ -94,6 +95,10 @@ public class Company {
     @ManyToOne
     @JoinColumn(name = "parent_company_id")
     private Company parentCompany;
+
+    @ManyToOne
+    @JoinColumn(name = "business_group")
+    private BusinessGroup businessGroup;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;

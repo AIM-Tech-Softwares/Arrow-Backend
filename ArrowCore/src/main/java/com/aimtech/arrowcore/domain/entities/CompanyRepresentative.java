@@ -20,10 +20,6 @@ public class CompanyRepresentative {
     @Column(name = "internal_id", nullable = false, unique = true)
     private Long internalId;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
-
     @Column(name = "cpf", length = 11, unique = true, nullable = false)
     private String cpf;
 

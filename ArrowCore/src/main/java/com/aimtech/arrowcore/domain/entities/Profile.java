@@ -7,6 +7,7 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,7 +24,7 @@ public class Profile {
     private Long internalId;
 
     @Column(nullable = false, unique = true, name = "external_id")
-    private String externalId = IdGenerator.generateExternalId();
+    private UUID externalId = IdGenerator.generateExternalId();
 
     @Column(nullable = false, name = "profile_name", unique = true)
     private String profileName;

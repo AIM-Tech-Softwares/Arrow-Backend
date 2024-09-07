@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -253,7 +254,7 @@ public class DataInitializationService {
     private void insertProfile(JdbcTemplate jdbcTemplate, String scheme) {
         String profileName = this.appProperties.getDefaultValues().getAdminProfileName();
         String description = this.appProperties.getDefaultValues().getAdminProfileDescription();
-        String externalId = IdGenerator.generateExternalId();
+        UUID externalId = IdGenerator.generateExternalId();
         String query = String.format(
                 "INSERT INTO %s.tb_profile (profile_name, description, external_id, is_active) VALUES (?, ?, ?, ?) ON CONFLICT (profile_name) DO NOTHING",
                 scheme
@@ -378,7 +379,7 @@ public class DataInitializationService {
     }
 
     private void insertDefaultUser(JdbcTemplate jdbcTemplate, String schema, String businessGroupInternalId) {
-        String externalId = IdGenerator.generateExternalId();
+        UUID externalId = IdGenerator.generateExternalId();
         String firstName = this.appProperties.getDefaultValues().getAdminFirstName();
         String lastName = this.appProperties.getDefaultValues().getAdminLastName();
         String username = this.appProperties.getDefaultValues().getAdminUsername();
