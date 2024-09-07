@@ -35,7 +35,6 @@ public class GeneratePasswordRecoveryTokenService {
         try {
             Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
             if (optionalUser.isEmpty()) {
-                logger.warning("User not found.");
                 return;
             }
             this.invalidateOldUnusedTokensFromUser(request.getUsername());
@@ -58,7 +57,7 @@ public class GeneratePasswordRecoveryTokenService {
             logger.info("Generated token: " + redirectUrl);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 

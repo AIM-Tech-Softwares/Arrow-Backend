@@ -24,14 +24,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginWithUsernameAndPasswordResponse> loginWithUsernameAndPassword(
-            @RequestBody LoginWithUsernameAndPasswordRequest request
+            @Valid @RequestBody LoginWithUsernameAndPasswordRequest request
     ) {
         LoginWithUsernameAndPasswordResponse result = this.loginWithUsernameAndPasswordService.execute(request);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/recovery-password")
-    public ResponseEntity<Void> recoveryPassword(@RequestBody RecoveryPasswordRequest request) {
+    public ResponseEntity<Void> recoveryPassword(@Valid @RequestBody RecoveryPasswordRequest request) {
         generatePasswordRecoveryTokenService.execute(request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -40,7 +40,7 @@ public class AuthController {
     public ResponseEntity<Void> setNewPassword(
             @PathVariable String tenant,
             @PathVariable String token,
-            @RequestBody @Valid RecoveryPasswordFromTokenRequest request
+            @Valid @RequestBody RecoveryPasswordFromTokenRequest request
     ) {
         recoveryPasswordFromTokenService.execute(token, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
