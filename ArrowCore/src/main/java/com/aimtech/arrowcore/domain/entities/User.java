@@ -3,6 +3,7 @@ package com.aimtech.arrowcore.domain.entities;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.AuditJoinTable;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
@@ -66,6 +67,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
+    @AuditJoinTable(name = "tb_log_user_profile")
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Set<Profile> profiles = new HashSet<>();
 

@@ -32,6 +32,7 @@ public class CompanyController {
     private final ChangeCompanyStatusService changeCompanyStatusService;
 
     @GetMapping
+    @CheckSecurity.Company.CanRead
     public ResponseEntity<Page<CompanySummaryResponse>> findPageableCompanies(
             Pageable pageable,
             @RequestParam(required = false, defaultValue = "ALL")FilterStatusEnum status
@@ -76,6 +77,7 @@ public class CompanyController {
     }
 
     @PatchMapping("/{externalId}/change-status")
+    @CheckSecurity.Company.CanChangeRepresentatives
     public ResponseEntity<CompanyDetailResponse> changeCompanyStatus(
             @Valid @PathVariable UUID externalId
     ) {
