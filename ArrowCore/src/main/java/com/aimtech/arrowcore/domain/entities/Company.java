@@ -2,6 +2,11 @@ package com.aimtech.arrowcore.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
@@ -14,9 +19,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_company")
+@AuditTable(value = "tb_log_company")
 public class Company {
 
     @Id
@@ -48,6 +55,7 @@ public class Company {
 
     @ManyToOne
     @JoinColumn(name = "tax_regime_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private TaxRegime taxRegime;
 
     @Column(name = "email", nullable = false)
@@ -58,6 +66,7 @@ public class Company {
 
     @ManyToOne
     @JoinColumn(name = "street_type_id")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private StreetType streetType;
 
     @Column(name = "street_name", nullable = false)
@@ -99,12 +108,15 @@ public class Company {
 
     @ManyToOne
     @JoinColumn(name = "business_group")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private BusinessGroup businessGroup;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 
 

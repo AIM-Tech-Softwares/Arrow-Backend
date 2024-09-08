@@ -26,6 +26,15 @@ public class AuthUtils {
         }
     }
 
+    public static String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwtPrincipal) {
+            return jwtPrincipal.getSubject();
+        } else {
+            return null;
+        }
+    }
+
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof Jwt jwtPrincipal) {
