@@ -47,6 +47,13 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(CompanyCannotBeItsOwnSubsidiaryException.class)
+    public ResponseEntity<CustomErrorResponse> companyCannotBeItsOwnSubsidiaryExceptionHandler(CompanyCannotBeItsOwnSubsidiaryException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(CompanyAlreadyRegisteredException.class)
     public ResponseEntity<CustomErrorResponse> companyAlreadyRegisteredExceptionHandler(CompanyAlreadyRegisteredException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

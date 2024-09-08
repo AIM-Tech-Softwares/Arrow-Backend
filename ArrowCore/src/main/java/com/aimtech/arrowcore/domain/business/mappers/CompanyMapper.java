@@ -1,6 +1,7 @@
 package com.aimtech.arrowcore.domain.business.mappers;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.CompanyRegisterRequest;
+import com.aimtech.arrowcore.domain.business.dto.requests.CompanyCreateRequest;
+import com.aimtech.arrowcore.domain.business.dto.requests.CompanyUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanyDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanySummaryResponse;
 import com.aimtech.arrowcore.domain.entities.Company;
@@ -20,8 +21,7 @@ public interface CompanyMapper {
     @Mapping(target = "parentCompany", ignore = true)
     @Mapping(target = "businessGroup", ignore = true)
     @Mapping(target = "representatives", ignore = true)
-    Company toEntity(CompanyRegisterRequest dto);
-
+    Company toEntity(CompanyCreateRequest dto);
 
     @Mapping(
             target = "parentCompanyCNPJ",
