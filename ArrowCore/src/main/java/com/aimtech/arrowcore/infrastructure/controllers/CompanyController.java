@@ -56,6 +56,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{externalId}")
+    @CheckSecurity.Company.CanUpdate
     public ResponseEntity<CompanyDetailResponse> updateCompany(
             @Valid @RequestBody CompanyUpdateRequest request,
             @Valid @PathVariable UUID externalId
