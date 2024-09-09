@@ -46,6 +46,13 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(DuplicateEntityException.class)
+    public ResponseEntity<CustomErrorResponse> duplicateEntityExceptionHandler(DuplicateEntityException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(CompanyRepresentativeAlreadyRegisteredException.class)
     public ResponseEntity<CustomErrorResponse> companyRepresentativeAlreadyRegisteredExceptionHandler(CompanyRepresentativeAlreadyRegisteredException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

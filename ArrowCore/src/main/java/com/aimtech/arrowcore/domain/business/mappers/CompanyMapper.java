@@ -1,7 +1,6 @@
 package com.aimtech.arrowcore.domain.business.mappers;
 
 import com.aimtech.arrowcore.domain.business.dto.requests.CompanyCreateRequest;
-import com.aimtech.arrowcore.domain.business.dto.requests.CompanyUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanyDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanySummaryResponse;
 import com.aimtech.arrowcore.domain.entities.Company;
