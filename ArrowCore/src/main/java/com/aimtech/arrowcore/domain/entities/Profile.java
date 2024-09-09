@@ -3,18 +3,25 @@ package com.aimtech.arrowcore.domain.entities;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_profile")
+@AuditTable(value = "tb_log_profile")
 public class Profile {
 
     @Id
@@ -23,7 +30,7 @@ public class Profile {
     private Long internalId;
 
     @Column(nullable = false, unique = true, name = "external_id")
-    private String externalId = IdGenerator.generateExternalId();
+    private UUID externalId = IdGenerator.generateExternalId();
 
     @Column(nullable = false, name = "profile_name", unique = true)
     private String profileName;
@@ -34,6 +41,7 @@ public class Profile {
     @Column(nullable = false, name = "is_active")
     private boolean isActive = true;
 
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_profile_role",
             joinColumns = @JoinColumn(name = "profile_id"),

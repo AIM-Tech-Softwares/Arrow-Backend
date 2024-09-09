@@ -22,6 +22,8 @@ public class StreetType {
     @Column(name = "street_type_name", nullable = false, length = 50)
     private String streetTypeName;
 
+    @Column(name = "street_type_abbreviation", nullable = false, length = 10)
+    private String streetTypeAbbreviation;
 
     @Override
     public boolean equals(Object o) {

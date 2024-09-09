@@ -42,7 +42,7 @@ public class GeneratePasswordRecoveryTokenService {
             Instant now = Instant.now();
             Integer tokenExpirationInSeconds = appProperties.getDefaultValues().getRecoveryToken().getExpiryInSeconds();
             User user = optionalUser.get();
-            String token = passwordUtils.generateHashedToken(user.getExternalId());
+            String token = passwordUtils.generateHashedToken(user.getExternalId().toString());
 
             PasswordRecover entity = PasswordRecover.builder()
                     .username(user.getUsername())

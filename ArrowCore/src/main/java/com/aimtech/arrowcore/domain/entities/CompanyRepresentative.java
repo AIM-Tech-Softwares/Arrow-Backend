@@ -2,6 +2,11 @@ package com.aimtech.arrowcore.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -10,19 +15,17 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_company_representative")
+@AuditTable(value = "tb_log_company_representative")
 public class CompanyRepresentative {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "internal_id", nullable = false, unique = true)
     private Long internalId;
-
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
 
     @Column(name = "cpf", length = 11, unique = true, nullable = false)
     private String cpf;
@@ -46,8 +49,10 @@ public class CompanyRepresentative {
     private Set<Company> companies;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private OffsetDateTime updatedAt;
 }

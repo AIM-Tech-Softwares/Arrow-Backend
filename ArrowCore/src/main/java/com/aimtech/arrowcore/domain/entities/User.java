@@ -3,24 +3,27 @@ package com.aimtech.arrowcore.domain.entities;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.AuditJoinTable;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_user")
+@AuditTable(value = "tb_log_user")
 public class User implements UserDetails {
 
     @Id
@@ -29,7 +32,7 @@ public class User implements UserDetails {
     private Long internalId;
 
     @Column(nullable = false, unique = true, name = "external_id")
-    private String externalId = IdGenerator.generateExternalId();
+    private UUID externalId = IdGenerator.generateExternalId();
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -54,6 +57,7 @@ public class User implements UserDetails {
 
     @ManyToOne
     @JoinColumn(name = "business_group")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private BusinessGroup businessGroup;
 
 
@@ -63,6 +67,8 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "profile_id")
     )
+    @AuditJoinTable(name = "tb_log_user_profile")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private Set<Profile> profiles = new HashSet<>();
 
     public void addProfile(Profile profile) {

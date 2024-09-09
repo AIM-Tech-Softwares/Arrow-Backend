@@ -2,6 +2,9 @@ package com.aimtech.arrowcore.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -11,9 +14,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_city")
+@AuditTable(value = "tb_log_city")
 public class City {
 
     @Id
@@ -38,6 +43,7 @@ public class City {
 
     @ManyToOne
     @JoinColumn(name = "state_id", nullable = false)
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private State state;
 
     @Column(name = "created_at", nullable = false, updatable = false)
