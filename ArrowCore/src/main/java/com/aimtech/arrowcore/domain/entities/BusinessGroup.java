@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,7 +23,7 @@ public class BusinessGroup {
     private Long internalId;
 
     @Column(nullable = false, unique = true, name = "external_id")
-    private String externalId = IdGenerator.generateExternalId();
+    private UUID externalId = IdGenerator.generateExternalId();
 
     @Column(name = "public_name", nullable = false)
     private String publicName;

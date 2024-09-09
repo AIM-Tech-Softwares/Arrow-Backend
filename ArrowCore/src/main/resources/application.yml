@@ -10,8 +10,8 @@ spring:
       max-lifetime: 1800000
       idle-timeout: 60000
       connection-test-query: SELECT 1
-      maximum-pool-size: 500
-      minimum-idle: 30
+      maximum-pool-size: 10
+      minimum-idle: 5
 
   jpa:
     properties:
@@ -34,7 +34,7 @@ arrowcore:
       admin-first-name: Admin
       admin-last-name: AIM Tech
       admin-username: admin@aimtech.com.br
-      admin-password: mudar123
+      admin-password: Mudar@123
       minimum-password-length: 8
       recovery-token:
         expiry-in-seconds: ${PASSWORD_RECOVER_EXPIRATION_TOKEN_SECONDS:1800}
