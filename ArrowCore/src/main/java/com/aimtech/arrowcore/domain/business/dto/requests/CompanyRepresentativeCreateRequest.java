@@ -35,6 +35,5 @@ public class CompanyRepresentativeCreateRequest {
     @NotBlank(message = "{arrowcore.messages.errors.validation.NotBlank}")
     private String position;
 
-    @NotNull(message = "{arrowcore.messages.errors.validation.NotNull}")
     private List<Long> companiesInternalIds;
 }

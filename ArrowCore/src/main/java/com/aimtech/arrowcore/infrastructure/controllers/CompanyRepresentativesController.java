@@ -2,9 +2,12 @@ package com.aimtech.arrowcore.infrastructure.controllers;
 
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.CompanyRepresentativeCreateRequest;
+import com.aimtech.arrowcore.domain.business.dto.requests.RepresentativeCompanyRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanyRepresentativeDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.CompanyRepresentativeSummaryResponse;
+import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.AssociateRepresentativeToCompanyService;
 import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.CreateCompanyRepresentativeService;
+import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.DissociateRepresentativeToCompanyService;
 import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.FindRepresentationsByCompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,8 @@ import java.util.UUID;
 public class CompanyRepresentativesController {
     private final FindRepresentationsByCompanyService findRepresentationsByCompanyService;
     private final CreateCompanyRepresentativeService createCompanyRepresentativeService;
+    private final AssociateRepresentativeToCompanyService associateRepresentativeToCompanyService;
+    private final DissociateRepresentativeToCompanyService dissociateRepresentativeToCompanyService;
 
     @GetMapping("/{cnpj}")
     public ResponseEntity<List<CompanyRepresentativeSummaryResponse>> findRepresentativesByCompanyCnpj(
@@ -34,11 +39,29 @@ public class CompanyRepresentativesController {
     public ResponseEntity<Void> createCompanyRepresentative(
             @Valid @PathVariable UUID externalCompanyId,
             @Valid @RequestBody CompanyRepresentativeCreateRequest request
-            ) {
+    ) {
         CompanyRepresentativeDetailResponse result = createCompanyRepresentativeService
                 .execute(request, externalCompanyId);
 
         ResourceUriHelper.addUriInResponseHeader(result.getInternalId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("/{externalCompanyId}/associate-representative")
+    public ResponseEntity<Void> associateRepresentativeToCompany(
+            @Valid @PathVariable UUID externalCompanyId,
+            @Valid @RequestBody RepresentativeCompanyRequest request
+    ) {
+        associateRepresentativeToCompanyService.execute(request, externalCompanyId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping("/{externalCompanyId}/dissociate-representative")
+    public ResponseEntity<Void> dissociateRepresentativeToCompany(
+            @Valid @PathVariable UUID externalCompanyId,
+            @Valid @RequestBody RepresentativeCompanyRequest request
+    ) {
+        dissociateRepresentativeToCompanyService.execute(request, externalCompanyId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

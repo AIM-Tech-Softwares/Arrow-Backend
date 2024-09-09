@@ -67,6 +67,27 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<CustomErrorResponse> duplicateResourceExceptionHandler(DuplicateResourceException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(ResourceNotAssociatedException.class)
+    public ResponseEntity<CustomErrorResponse> resourceNotAssociatedExceptionHandler(ResourceNotAssociatedException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(NoRepresentativesAssignedException.class)
+    public ResponseEntity<CustomErrorResponse> noRepresentativesAssignedExceptionHandler(NoRepresentativesAssignedException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(InvalidEnumValueException.class)
     public ResponseEntity<CustomErrorResponse> illegalArgumentExceptionHandler(InvalidEnumValueException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
