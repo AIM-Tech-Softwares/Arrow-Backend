@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/countries")
+@RequestMapping("/addresses/countries")
 public class CountryController {
     private final FindAllCountryService findAllCountryService;
     private final FindCountryByInternalIdService findCountryByInternalIdService;
