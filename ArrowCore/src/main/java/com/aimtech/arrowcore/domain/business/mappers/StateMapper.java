@@ -11,6 +11,8 @@ public interface StateMapper {
 
     @Mapping(target = "cities", ignore = true)
     @Mapping(target = "country", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "internalId", ignore = true)
     State toEntity(StateCreateRequest dto);
 

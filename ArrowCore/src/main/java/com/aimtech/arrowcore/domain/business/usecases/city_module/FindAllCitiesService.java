@@ -3,6 +3,7 @@ package com.aimtech.arrowcore.domain.business.usecases.city_module;
 import com.aimtech.arrowcore.domain.business.dto.responses.CitySummaryResponse;
 import com.aimtech.arrowcore.domain.business.mappers.CityMapper;
 import com.aimtech.arrowcore.domain.entities.City;
+import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import com.aimtech.arrowcore.domain.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,8 +18,15 @@ public class FindAllCitiesService {
     private final CityMapper cityMapper;
 
     @Transactional(readOnly = true)
-    public Page<CitySummaryResponse> execute(Pageable pageable) {
-        Page<City> cityPage = cityRepository.findAll(pageable);
+    public Page<CitySummaryResponse> execute(Pageable pageable, FilterStatusEnum status) {
+        Page<City> cityPage;
+
+        switch (status) {
+            case ENABLED -> cityPage = cityRepository.findAllByIsActive(pageable, true);
+            case DISABLED -> cityPage = cityRepository.findAllByIsActive(pageable, false);
+            default -> cityPage = cityRepository.findAll(pageable);
+        }
+
         return cityPage.map(cityMapper::toSummaryResponse);
     }
 }

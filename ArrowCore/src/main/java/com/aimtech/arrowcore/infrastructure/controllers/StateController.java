@@ -4,10 +4,8 @@ import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.StateCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.StateUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.StateDetailResponse;
-import com.aimtech.arrowcore.domain.business.usecases.state_module.CreateStateService;
-import com.aimtech.arrowcore.domain.business.usecases.state_module.FindAllStatesServices;
-import com.aimtech.arrowcore.domain.business.usecases.state_module.FindStateByInternalIdService;
-import com.aimtech.arrowcore.domain.business.usecases.state_module.UpdateStateService;
+import com.aimtech.arrowcore.domain.business.usecases.state_module.*;
+import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,11 +22,15 @@ public class StateController {
     private final FindStateByInternalIdService findStateByInternalIdService;
     private final CreateStateService createStateService;
     private final UpdateStateService updateStateService;
+    private final ChangeStateStatusService changeStateStatusService;
 
 
     @GetMapping
-    public ResponseEntity<Page<StateDetailResponse>> findAll(Pageable pageable) {
-        Page<StateDetailResponse> result = this.findAllStatesServices.execute(pageable);
+    public ResponseEntity<Page<StateDetailResponse>> findAll(
+            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
+    ) {
+        Page<StateDetailResponse> result = this.findAllStatesServices.execute(pageable, status);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -53,5 +55,11 @@ public class StateController {
     ) {
         StateDetailResponse result = this.updateStateService.execute(request, internalId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PatchMapping("/{stateId}/change-status")
+    public ResponseEntity<Void> changeStatus(@PathVariable Long stateId) {
+        this.changeStateStatusService.execute(stateId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

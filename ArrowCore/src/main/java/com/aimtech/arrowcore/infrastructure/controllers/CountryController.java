@@ -5,6 +5,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.CountryCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.CountryUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.CountryDetailResponse;
 import com.aimtech.arrowcore.domain.business.usecases.country_module.*;
+import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,10 +24,14 @@ public class CountryController {
     private final FindCountryByIsoCodeService findCountryByIsoCodeService;
     private final CreateCountryService createCountryService;
     private final UpdateCountryService updateCountryService;
+    private final ChangeCountryStatusService changeCountryStatusService;
 
     @GetMapping
-    public ResponseEntity<Page<CountryDetailResponse>> findAll(Pageable pageable) {
-        Page<CountryDetailResponse> result = this.findAllCountryService.execute(pageable);
+    public ResponseEntity<Page<CountryDetailResponse>> findAll(
+            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
+    ) {
+        Page<CountryDetailResponse> result = this.findAllCountryService.execute(pageable, status);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -57,5 +62,11 @@ public class CountryController {
     ) {
         CountryDetailResponse result = this.updateCountryService.execute(request, internalId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PatchMapping("/{countryId}/change-status")
+    public ResponseEntity<Void> changeStatus(@PathVariable Long countryId) {
+        this.changeCountryStatusService.execute(countryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

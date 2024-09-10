@@ -2,7 +2,12 @@ package com.aimtech.arrowcore.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
 
+import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,9 +15,11 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@Audited
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tb_country")
+@AuditTable(value = "tb_log_country")
 public class Country {
 
     @Id
@@ -25,6 +32,17 @@ public class Country {
 
     @Column(name = "iso_code", nullable = false, length = 3)
     private String isoCode;
+
+    @Column(name = "is_active", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
+    private Boolean isActive;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 
     @OneToMany(mappedBy = "country")
     private Set<State> states;

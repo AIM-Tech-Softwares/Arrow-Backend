@@ -45,7 +45,6 @@ public class City {
 
     @ManyToOne
     @JoinColumn(name = "state_id", nullable = false)
-    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private State state;
 
     @Column(name = "created_at", nullable = false, updatable = false)

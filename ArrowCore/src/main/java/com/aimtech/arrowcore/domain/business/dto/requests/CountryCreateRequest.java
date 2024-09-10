@@ -19,4 +19,6 @@ public class CountryCreateRequest {
     @NotBlank(message = "{arrowcore.messages.errors.validation.NotBlank}")
     @Size(min = 3, max = 3, message = "{arrowcore.messages.errors.validation.Size}")
     private String isoCode;
+
+    private Boolean isActive;
 }

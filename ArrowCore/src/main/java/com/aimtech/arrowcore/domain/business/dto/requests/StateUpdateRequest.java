@@ -23,4 +23,6 @@ public class StateUpdateRequest {
 
     @Positive(message = "{arrowcore.messages.errors.validation.Positive}")
     private Long countryId;
+
+    private Boolean isActive;
 }

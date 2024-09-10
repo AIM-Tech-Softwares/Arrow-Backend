@@ -18,4 +18,6 @@ public class CountryUpdateRequest {
 
     @Size(min = 3, max = 3, message = "{arrowcore.messages.errors.validation.Size}")
     private String isoCode;
+
+    private Boolean isActive;
 }

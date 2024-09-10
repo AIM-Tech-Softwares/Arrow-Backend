@@ -6,6 +6,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.CityUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.CityDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.CitySummaryResponse;
 import com.aimtech.arrowcore.domain.business.usecases.city_module.*;
+import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,8 +27,11 @@ public class CityController {
 
 
     @GetMapping
-    public ResponseEntity<Page<CitySummaryResponse>> findAll(Pageable pageable) {
-        Page<CitySummaryResponse> result = this.findAllCitiesService.execute(pageable);
+    public ResponseEntity<Page<CitySummaryResponse>> findAll(
+            Pageable pageable,
+            @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
+    ) {
+        Page<CitySummaryResponse> result = this.findAllCitiesService.execute(pageable, status);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

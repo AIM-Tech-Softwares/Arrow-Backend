@@ -26,4 +26,6 @@ public class StateCreateRequest {
     @NotNull(message = "{arrowcore.messages.errors.validation.NotNull}")
     @Positive(message = "{arrowcore.messages.errors.validation.Positive}")
     private Long countryId;
+
+    private Boolean isActive;
 }

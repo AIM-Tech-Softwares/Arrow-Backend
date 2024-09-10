@@ -10,6 +10,8 @@ import org.mapstruct.Mapping;
 public interface CountryMapper {
 
     @Mapping(target = "states", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "internalId", ignore = true)
     Country toEntity(CountryCreateRequest dto);
 
