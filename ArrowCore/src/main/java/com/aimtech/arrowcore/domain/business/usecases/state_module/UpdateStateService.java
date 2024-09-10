@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ public class UpdateStateService {
     private final StateUpdateMapper stateUpdateMapper;
     private final MessageSource messageSource;
 
-
+    @Transactional
     public StateDetailResponse execute(StateUpdateRequest request, Long stateId) {
         State state = stateRepository.findById(stateId).orElseThrow(
                 () -> new ResourceNotFoundedException(

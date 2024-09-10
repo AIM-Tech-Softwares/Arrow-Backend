@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class FindCityByIdService {
     private final CityMapper cityMapper;
     private final MessageSource messageSource;
 
+    @Transactional(readOnly = true)
     public CityDetailResponse execute(Long internalId) {
         City city = cityRepository.findById(internalId).orElseThrow(
                 () -> new ResourceNotFoundedException(

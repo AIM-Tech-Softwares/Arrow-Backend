@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class FindSubsidiaryCompaniesByParentCnpjService {
     private final MessageSource messageSource;
     private final CompanyMapper companyMapper;
 
+    @Transactional(readOnly = true)
     public List<CompanySummaryResponse> execute(String parentCnpj) {
         List<Company> companies = companyRepository.findByParentCompany_Cnpj(parentCnpj);
         if (companies.isEmpty()) {

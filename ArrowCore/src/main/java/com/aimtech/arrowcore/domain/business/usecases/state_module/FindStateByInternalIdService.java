@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class FindStateByInternalIdService {
     private final StateMapper stateMapper;
     private final MessageSource messageSource;
 
-
+    @Transactional(readOnly = true)
     public StateDetailResponse execute(Long id) {
         State state = stateRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundedException(

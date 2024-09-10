@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class CreateCountryService {
     private final CountryMapper countryMapper;
     private final MessageSource messageSource;
 
+    @Transactional
     public CountryDetailResponse execute(CountryCreateRequest request) {
         if (countryRepository.existsByIsoCode(request.getIsoCode())) {
             throw new DuplicateResourceException(

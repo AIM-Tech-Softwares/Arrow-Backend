@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -23,6 +24,7 @@ public class GenerateJwtTokenService {
     private final JwtEncoder jwtEncoder;
     private final SecurityProperties securityProperties;
 
+    @Transactional
     public String execute(Authentication authentication, BusinessGroup businessGroup) {
         Instant now = Instant.now();
         Long expiry = this.securityProperties.getToken().getExpiryInSeconds();

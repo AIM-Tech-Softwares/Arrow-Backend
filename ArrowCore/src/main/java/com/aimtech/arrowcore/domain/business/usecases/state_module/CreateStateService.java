@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class CreateStateService {
     private final StateMapper stateMapper;
     private final MessageSource messageSource;
 
+    @Transactional
     public StateDetailResponse execute(StateCreateRequest request) {
         Country country = countryRepository.findById(request.getCountryId()).orElseThrow(
                 () -> new ResourceNotFoundedException(

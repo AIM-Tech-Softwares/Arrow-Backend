@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class FindAllStatesServices {
     private final StateRepository stateRepository;
     private final StateMapper stateMapper;
 
-
+    @Transactional(readOnly = true)
     public Page<StateDetailResponse> execute(Pageable pageable) {
         Page<State> statePage = stateRepository.findAll(pageable);
         return statePage.map(stateMapper::toDetailResponse);

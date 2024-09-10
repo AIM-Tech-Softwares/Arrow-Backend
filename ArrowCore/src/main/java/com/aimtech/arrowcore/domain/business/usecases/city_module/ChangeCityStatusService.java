@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,7 +15,7 @@ public class ChangeCityStatusService {
     private final CityRepository cityRepository;
     private final MessageSource messageSource;
 
-
+    @Transactional
     public void execute(Long internalId) {
         City city = cityRepository.findById(internalId).orElseThrow(
                 () -> new ResourceNotFoundedException(

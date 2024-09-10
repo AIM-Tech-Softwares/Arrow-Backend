@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class FindCountryByIsoCodeService {
     private final CountryMapper countryMapper;
     private final MessageSource messageSource;
 
+    @Transactional(readOnly = true)
     public CountryDetailResponse execute(String isoCode) {
         Country country = countryRepository.findByIsoCode(isoCode.toUpperCase()).orElseThrow(
                 () -> new ResourceNotFoundedException(
