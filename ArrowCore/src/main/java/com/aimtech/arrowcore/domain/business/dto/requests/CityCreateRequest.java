@@ -2,18 +2,12 @@ package com.aimtech.arrowcore.domain.business.dto.requests;
 
 import com.aimtech.arrowcore.core.annotation.ValidLatitude;
 import com.aimtech.arrowcore.core.annotation.ValidLongitude;
-import com.aimtech.arrowcore.domain.entities.State;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.math.BigDecimal;
 
@@ -37,6 +31,7 @@ public class CityCreateRequest {
     @ValidLongitude(message = "{arrowcore.errors.validation.custom.ValidLongitude}")
     private BigDecimal longitude;
 
+    @NotNull(message = "{arrowcore.messages.errors.validation.NotNull}")
     private Boolean isActive;
 
     @NotNull(message = "{arrowcore.messages.errors.validation.NotNull}")

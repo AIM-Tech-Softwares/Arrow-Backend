@@ -2,8 +2,6 @@ package com.aimtech.arrowcore.domain.business.dto.requests;
 
 import com.aimtech.arrowcore.core.annotation.ValidLatitude;
 import com.aimtech.arrowcore.core.annotation.ValidLongitude;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

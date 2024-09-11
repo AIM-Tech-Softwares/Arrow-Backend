@@ -1,6 +1,7 @@
 package com.aimtech.arrowcore.domain.business.dto.requests;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,6 @@ public class CountryCreateRequest {
     @Size(min = 3, max = 3, message = "{arrowcore.messages.errors.validation.Size}")
     private String isoCode;
 
+    @NotNull(message = "{arrowcore.messages.errors.validation.NotNull}")
     private Boolean isActive;
 }

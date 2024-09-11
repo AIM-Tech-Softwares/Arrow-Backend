@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class StreetTypeDetailResponse {
+public class StreetTypeSummaryResponse {
 
     private Long internalId;
 
@@ -20,8 +20,4 @@ public class StreetTypeDetailResponse {
     private String streetTypeAbbreviation;
 
     private Boolean isActive;
-
-    private OffsetDateTime createdAt;
-
-    private OffsetDateTime updatedAt;
 }
