@@ -7,6 +7,7 @@ import com.aimtech.arrowcore.domain.business.dto.responses.auth.LoginWithUsernam
 import com.aimtech.arrowcore.domain.business.usecases.auth.GeneratePasswordRecoveryTokenService;
 import com.aimtech.arrowcore.domain.business.usecases.auth.LoginWithUsernameAndPasswordService;
 import com.aimtech.arrowcore.domain.business.usecases.auth.RecoveryPasswordFromTokenService;
+import com.aimtech.arrowcore.infrastructure.openapi.auth.AuthControllerOpenApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthControllerOpenApi {
     private final LoginWithUsernameAndPasswordService loginWithUsernameAndPasswordService;
     private final GeneratePasswordRecoveryTokenService generatePasswordRecoveryTokenService;
     private final RecoveryPasswordFromTokenService recoveryPasswordFromTokenService;
@@ -37,9 +38,10 @@ public class AuthController {
 
     @PostMapping("/recovery-password/{tenant}/{token}")
     public ResponseEntity<Void> setNewPassword(
+            @Valid @RequestBody RecoveryPasswordFromTokenRequest request,
             @PathVariable String tenant,
-            @PathVariable String token,
-            @Valid @RequestBody RecoveryPasswordFromTokenRequest request
+            @PathVariable String token
+
     ) {
         recoveryPasswordFromTokenService.execute(token, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

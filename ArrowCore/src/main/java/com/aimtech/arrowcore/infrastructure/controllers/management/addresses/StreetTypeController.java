@@ -7,6 +7,7 @@ import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetType
 import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetTypeSummaryResponse;
 import com.aimtech.arrowcore.domain.business.usecases.management.streettype_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
+import com.aimtech.arrowcore.infrastructure.openapi.management.addresses.StreetTypeControllerOpenApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management/addresses/street-type")
-public class StreetTypeController {
+public class StreetTypeController implements StreetTypeControllerOpenApi {
     private final FindAllStreetTypesService findAllStreetTypesService;
     private final FindStreetTypeByInternalIdService findStreetTypeByInternalIdService;
     private final CreateStreetTypeService createStreetTypeService;
@@ -26,6 +27,7 @@ public class StreetTypeController {
     private final ChangeStatusStreetTypeService changeStatusStreetTypeService;
 
 
+    @Override
     @GetMapping
     public ResponseEntity<Page<StreetTypeSummaryResponse>> findAll(
             Pageable pageable,
@@ -35,12 +37,14 @@ public class StreetTypeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @GetMapping("/{streetTypeId}")
     public ResponseEntity<StreetTypeDetailResponse> findById(@Valid @PathVariable Long streetTypeId) {
         StreetTypeDetailResponse result = this.findStreetTypeByInternalIdService.execute(streetTypeId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody StreetTypeCreateRequest request) {
         StreetTypeDetailResponse result = this.createStreetTypeService.execute(request);
@@ -49,6 +53,7 @@ public class StreetTypeController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
     @PutMapping("/{streetTypeId}")
     public ResponseEntity<StreetTypeDetailResponse> update(
             @Valid @RequestBody StreetTypeUpdateRequest request,
@@ -58,6 +63,7 @@ public class StreetTypeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PatchMapping("/{streetTypeId}/change-status")
     public ResponseEntity<Void> changeStatus(@PathVariable Long streetTypeId) {
         this.changeStatusStreetTypeService.execute(streetTypeId);

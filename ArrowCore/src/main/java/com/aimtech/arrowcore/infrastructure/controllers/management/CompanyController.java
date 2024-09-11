@@ -9,6 +9,7 @@ import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyDet
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanySummaryResponse;
 import com.aimtech.arrowcore.domain.business.usecases.management.company_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
+import com.aimtech.arrowcore.infrastructure.openapi.management.CompanyControllerOpenApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management/companies")
-public class CompanyController {
+public class CompanyController implements CompanyControllerOpenApi {
     private final FindAllCompanyFilteringByStatusService findAllCompanyFilteringByStatusService;
     private final FindCompanyByExternalIdServices findCompanyByExternalIdServices;
     private final FindSubsidiaryCompaniesByParentCnpjService findSubsidiaryCompaniesByParentCnpjService;
@@ -31,6 +32,7 @@ public class CompanyController {
     private final UpdateCompanyService updateCompanyService;
     private final ChangeCompanyStatusService changeCompanyStatusService;
 
+    @Override
     @GetMapping
     @CheckSecurity.Company.CanRead
     public ResponseEntity<Page<CompanySummaryResponse>> findPageableCompanies(
@@ -41,6 +43,7 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @GetMapping("/{externalId}")
     @CheckSecurity.Company.CanRead
     public ResponseEntity<CompanyDetailResponse> findCompanyByExternalId(@Valid @PathVariable UUID externalId) {
@@ -48,6 +51,7 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @GetMapping("/subsidiary-companies/{parentCnpj}")
     @CheckSecurity.Company.CanRead
     public ResponseEntity<List<CompanySummaryResponse>> findSubsidiaryCompanies(@PathVariable @ValidCNPJ String parentCnpj) {
@@ -55,6 +59,7 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PostMapping
     @CheckSecurity.Company.CanCreate
     public ResponseEntity<CompanyDetailResponse> createCompany(
@@ -66,6 +71,7 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @Override
     @PutMapping("/{externalId}")
     @CheckSecurity.Company.CanUpdate
     public ResponseEntity<CompanyDetailResponse> updateCompany(
@@ -76,6 +82,7 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PatchMapping("/{externalId}/change-status")
     @CheckSecurity.Company.CanChangeRepresentatives
     public ResponseEntity<CompanyDetailResponse> changeCompanyStatus(

@@ -6,6 +6,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.management.StateUpdate
 import com.aimtech.arrowcore.domain.business.dto.responses.management.StateDetailResponse;
 import com.aimtech.arrowcore.domain.business.usecases.management.state_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
+import com.aimtech.arrowcore.infrastructure.openapi.management.addresses.StateControllerOpenApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management/addresses/states")
-public class StateController {
+public class StateController implements StateControllerOpenApi {
     private final FindAllStatesServices findAllStatesServices;
     private final FindStateByInternalIdService findStateByInternalIdService;
     private final CreateStateService createStateService;
@@ -25,6 +26,7 @@ public class StateController {
     private final ChangeStateStatusService changeStateStatusService;
 
 
+    @Override
     @GetMapping
     public ResponseEntity<Page<StateDetailResponse>> findAll(
             Pageable pageable,
@@ -34,12 +36,14 @@ public class StateController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @GetMapping("/{internalId}")
     public ResponseEntity<StateDetailResponse> findStateByInternalId(@PathVariable Long internalId) {
         StateDetailResponse result = this.findStateByInternalIdService.execute(internalId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<Void> createState(@Valid @RequestBody StateCreateRequest request) {
         StateDetailResponse result = this.createStateService.execute(request);
@@ -48,6 +52,7 @@ public class StateController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
     @PutMapping("/{internalId}")
     public ResponseEntity<StateDetailResponse> updateState(
             @Valid @RequestBody StateUpdateRequest request,
@@ -57,6 +62,7 @@ public class StateController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PatchMapping("/{stateId}/change-status")
     public ResponseEntity<Void> changeStatus(@PathVariable Long stateId) {
         this.changeStateStatusService.execute(stateId);

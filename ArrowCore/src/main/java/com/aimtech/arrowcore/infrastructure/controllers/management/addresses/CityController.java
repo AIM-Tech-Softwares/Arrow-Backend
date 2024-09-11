@@ -7,6 +7,8 @@ import com.aimtech.arrowcore.domain.business.dto.responses.management.CityDetail
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CitySummaryResponse;
 import com.aimtech.arrowcore.domain.business.usecases.management.city_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
+import com.aimtech.arrowcore.infrastructure.openapi.management.addresses.CityControllerOpenApi;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/management/addresses/cities")
-public class CityController {
+public class CityController implements CityControllerOpenApi {
     private final FindAllCitiesService findAllCitiesService;
     private final FindCityByIdService findCityByIdService;
     private final CreateCityService createCityService;
@@ -26,6 +28,7 @@ public class CityController {
     private final ChangeCityStatusService changeCityStatusService;
 
 
+    @Override
     @GetMapping
     public ResponseEntity<Page<CitySummaryResponse>> findAll(
             Pageable pageable,
@@ -35,12 +38,14 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @GetMapping("/{cityId}")
     public ResponseEntity<CityDetailResponse> findById(@Valid @PathVariable Long cityId) {
         CityDetailResponse result = this.findCityByIdService.execute(cityId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<Void> create(@Valid @RequestBody CityCreateRequest request) {
         CityDetailResponse result = this.createCityService.execute(request);
@@ -49,6 +54,7 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
     @PutMapping("/{cityId}")
     public ResponseEntity<CityDetailResponse> update(
             @Valid @RequestBody CityUpdateRequest request,
@@ -58,6 +64,7 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @Override
     @PatchMapping("/{cityId}/change-status")
     public ResponseEntity<Void> changeStatus(@PathVariable Long cityId) {
         this.changeCityStatusService.execute(cityId);
