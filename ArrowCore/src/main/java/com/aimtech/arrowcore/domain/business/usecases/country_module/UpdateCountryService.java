@@ -1,9 +1,9 @@
 package com.aimtech.arrowcore.domain.business.usecases.country_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.CountryUpdateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.CountryDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CountryMapper;
-import com.aimtech.arrowcore.domain.business.mappers.CountryUpdateMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.CountryUpdateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CountryDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CountryMapper;
+import com.aimtech.arrowcore.domain.business.mappers.management.CountryUpdateMapper;
 import com.aimtech.arrowcore.domain.entities.Country;
 import com.aimtech.arrowcore.domain.repository.CountryRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;

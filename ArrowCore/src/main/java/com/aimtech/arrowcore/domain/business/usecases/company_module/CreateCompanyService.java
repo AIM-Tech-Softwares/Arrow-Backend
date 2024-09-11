@@ -2,9 +2,9 @@ package com.aimtech.arrowcore.domain.business.usecases.company_module;
 
 import com.aimtech.arrowcore.core.utils.AuthUtils;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
-import com.aimtech.arrowcore.domain.business.dto.requests.CompanyCreateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.CompanyDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CompanyMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyCreateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CompanyMapper;
 import com.aimtech.arrowcore.domain.entities.*;
 import com.aimtech.arrowcore.domain.repository.CityRepository;
 import com.aimtech.arrowcore.domain.repository.CompanyRepository;

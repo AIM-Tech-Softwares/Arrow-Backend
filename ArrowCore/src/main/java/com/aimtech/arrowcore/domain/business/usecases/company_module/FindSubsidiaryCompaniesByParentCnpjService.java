@@ -1,7 +1,7 @@
 package com.aimtech.arrowcore.domain.business.usecases.company_module;
 
-import com.aimtech.arrowcore.domain.business.dto.responses.CompanySummaryResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CompanyMapper;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanySummaryResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CompanyMapper;
 import com.aimtech.arrowcore.domain.entities.Company;
 import com.aimtech.arrowcore.domain.repository.CompanyRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.CompanyHasNoBranchesException;

@@ -1,7 +1,7 @@
 package com.aimtech.arrowcore.domain.business.usecases.streettype_module;
 
-import com.aimtech.arrowcore.domain.business.dto.responses.StreetTypeSummaryResponse;
-import com.aimtech.arrowcore.domain.business.mappers.StreetTypeMapper;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetTypeSummaryResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.StreetTypeMapper;
 import com.aimtech.arrowcore.domain.entities.StreetType;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import com.aimtech.arrowcore.domain.repository.StreetTypeRepository;

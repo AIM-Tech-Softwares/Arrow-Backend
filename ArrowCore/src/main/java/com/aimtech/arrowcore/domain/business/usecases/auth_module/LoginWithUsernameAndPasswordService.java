@@ -1,8 +1,8 @@
 package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
 import com.aimtech.arrowcore.core.properties.SecurityProperties;
-import com.aimtech.arrowcore.domain.business.dto.requests.LoginWithUsernameAndPasswordRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
+import com.aimtech.arrowcore.domain.business.dto.requests.auth.LoginWithUsernameAndPasswordRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.auth.LoginWithUsernameAndPasswordResponse;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameOrPasswordInvalidException;

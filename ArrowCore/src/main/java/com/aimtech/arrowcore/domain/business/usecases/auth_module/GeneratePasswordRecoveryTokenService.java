@@ -2,14 +2,13 @@ package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
 import com.aimtech.arrowcore.core.properties.AppProperties;
 import com.aimtech.arrowcore.core.utils.PasswordUtils;
-import com.aimtech.arrowcore.domain.business.dto.requests.RecoveryPasswordRequest;
+import com.aimtech.arrowcore.domain.business.dto.requests.auth.RecoveryPasswordRequest;
 import com.aimtech.arrowcore.domain.entities.PasswordRecover;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.PasswordRecoveryRepository;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;

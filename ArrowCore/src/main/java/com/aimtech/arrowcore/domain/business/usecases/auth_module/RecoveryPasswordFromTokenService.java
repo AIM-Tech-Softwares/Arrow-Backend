@@ -1,6 +1,6 @@
 package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.RecoveryPasswordFromTokenRequest;
+import com.aimtech.arrowcore.domain.business.dto.requests.auth.RecoveryPasswordFromTokenRequest;
 import com.aimtech.arrowcore.domain.entities.PasswordRecover;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.PasswordRecoveryRepository;

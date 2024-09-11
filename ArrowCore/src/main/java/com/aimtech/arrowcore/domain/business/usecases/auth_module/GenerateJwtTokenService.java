@@ -1,7 +1,6 @@
 package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
 import com.aimtech.arrowcore.core.properties.SecurityProperties;
-import com.aimtech.arrowcore.domain.business.dto.responses.LoginWithUsernameAndPasswordResponse;
 import com.aimtech.arrowcore.domain.entities.BusinessGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

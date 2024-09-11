@@ -1,7 +1,7 @@
 package com.aimtech.arrowcore.domain.business.usecases.city_module;
 
-import com.aimtech.arrowcore.domain.business.dto.responses.CityDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CityMapper;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CityDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CityMapper;
 import com.aimtech.arrowcore.domain.entities.City;
 import com.aimtech.arrowcore.domain.repository.CityRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;

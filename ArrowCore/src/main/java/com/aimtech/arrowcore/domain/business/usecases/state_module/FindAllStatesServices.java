@@ -1,7 +1,7 @@
 package com.aimtech.arrowcore.domain.business.usecases.state_module;
 
-import com.aimtech.arrowcore.domain.business.dto.responses.StateDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.StateMapper;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.StateDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.StateMapper;
 import com.aimtech.arrowcore.domain.entities.State;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import com.aimtech.arrowcore.domain.repository.StateRepository;

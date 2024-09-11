@@ -1,8 +1,8 @@
 package com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.CompanyRepresentativeCreateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.CompanyRepresentativeDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CompanyRepresentativeMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyRepresentativeCreateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyRepresentativeDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CompanyRepresentativeMapper;
 import com.aimtech.arrowcore.domain.entities.Company;
 import com.aimtech.arrowcore.domain.entities.CompanyRepresentative;
 import com.aimtech.arrowcore.domain.repository.CompanyRepository;

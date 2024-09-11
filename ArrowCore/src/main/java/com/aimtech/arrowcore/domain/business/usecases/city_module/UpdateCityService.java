@@ -1,9 +1,9 @@
 package com.aimtech.arrowcore.domain.business.usecases.city_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.CityUpdateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.CityDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CityMapper;
-import com.aimtech.arrowcore.domain.business.mappers.CityUpdateMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.CityUpdateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CityDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CityMapper;
+import com.aimtech.arrowcore.domain.business.mappers.management.CityUpdateMapper;
 import com.aimtech.arrowcore.domain.entities.City;
 import com.aimtech.arrowcore.domain.entities.State;
 import com.aimtech.arrowcore.domain.repository.CityRepository;

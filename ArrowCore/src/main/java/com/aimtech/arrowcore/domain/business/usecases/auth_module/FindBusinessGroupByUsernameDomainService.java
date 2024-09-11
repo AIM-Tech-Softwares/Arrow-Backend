@@ -1,7 +1,7 @@
 package com.aimtech.arrowcore.domain.business.usecases.auth_module;
 
-import com.aimtech.arrowcore.domain.business.dto.responses.BusinessGroupResponse;
-import com.aimtech.arrowcore.domain.business.mappers.BusinessGroupMapper;
+import com.aimtech.arrowcore.domain.business.dto.responses.admin.BusinessGroupResponse;
+import com.aimtech.arrowcore.domain.business.mappers.admin.BusinessGroupMapper;
 import com.aimtech.arrowcore.domain.entities.BusinessGroup;
 import com.aimtech.arrowcore.domain.repository.BusinessGroupRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.InvalidTenantDomainException;

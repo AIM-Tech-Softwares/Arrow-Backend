@@ -1,8 +1,8 @@
 package com.aimtech.arrowcore.domain.business.usecases.state_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.StateCreateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.StateDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.StateMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.StateCreateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.StateDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.StateMapper;
 import com.aimtech.arrowcore.domain.entities.Country;
 import com.aimtech.arrowcore.domain.entities.State;
 import com.aimtech.arrowcore.domain.repository.CountryRepository;

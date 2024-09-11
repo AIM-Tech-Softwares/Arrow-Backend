@@ -1,9 +1,9 @@
 package com.aimtech.arrowcore.domain.business.usecases.streettype_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.StreetTypeUpdateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.StreetTypeDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.StreetTypeMapper;
-import com.aimtech.arrowcore.domain.business.mappers.StreetTypeUpdateMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.StreetTypeUpdateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetTypeDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.StreetTypeMapper;
+import com.aimtech.arrowcore.domain.business.mappers.management.StreetTypeUpdateMapper;
 import com.aimtech.arrowcore.domain.entities.StreetType;
 import com.aimtech.arrowcore.domain.repository.StreetTypeRepository;
 import lombok.RequiredArgsConstructor;

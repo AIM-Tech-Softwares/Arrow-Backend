@@ -1,9 +1,9 @@
 package com.aimtech.arrowcore.domain.business.usecases.company_module;
 
-import com.aimtech.arrowcore.domain.business.dto.requests.CompanyUpdateRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.CompanyDetailResponse;
-import com.aimtech.arrowcore.domain.business.mappers.CompanyMapper;
-import com.aimtech.arrowcore.domain.business.mappers.CompanyUpdateMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyUpdateRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyDetailResponse;
+import com.aimtech.arrowcore.domain.business.mappers.management.CompanyMapper;
+import com.aimtech.arrowcore.domain.business.mappers.management.CompanyUpdateMapper;
 import com.aimtech.arrowcore.domain.entities.City;
 import com.aimtech.arrowcore.domain.entities.Company;
 import com.aimtech.arrowcore.domain.entities.StreetType;

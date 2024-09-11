@@ -3,9 +3,9 @@ package com.aimtech.arrowcore.domain.business.usecases.user_module;
 import com.aimtech.arrowcore.core.utils.AuthUtils;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
 import com.aimtech.arrowcore.core.utils.PasswordUtils;
-import com.aimtech.arrowcore.domain.business.dto.requests.UserRegisterRequest;
-import com.aimtech.arrowcore.domain.business.dto.responses.UserRegisterResponse;
-import com.aimtech.arrowcore.domain.business.mappers.UserMapper;
+import com.aimtech.arrowcore.domain.business.dto.requests.admin.UserRegisterRequest;
+import com.aimtech.arrowcore.domain.business.dto.responses.admin.UserRegisterResponse;
+import com.aimtech.arrowcore.domain.business.mappers.admin.UserMapper;
 import com.aimtech.arrowcore.domain.entities.Profile;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.ProfileRepository;
@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
