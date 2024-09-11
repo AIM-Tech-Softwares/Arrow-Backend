@@ -17,5 +17,7 @@ public class StateDetailResponse {
 
     private String stateCode;
 
+    private Boolean isActive;
+
     private String countryIsoCode;
 }
