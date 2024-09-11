@@ -7,7 +7,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyCrea
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanySummaryResponse;
-import com.aimtech.arrowcore.domain.business.usecases.company_module.*;
+import com.aimtech.arrowcore.domain.business.usecases.management.company_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -5,10 +5,10 @@ import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyRepr
 import com.aimtech.arrowcore.domain.business.dto.requests.management.RepresentativeCompanyRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyRepresentativeDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyRepresentativeSummaryResponse;
-import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.AssociateRepresentativeToCompanyService;
-import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.CreateCompanyRepresentativeService;
-import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.DissociateRepresentativeToCompanyService;
-import com.aimtech.arrowcore.domain.business.usecases.companyrepresentative_module.FindRepresentationsByCompanyService;
+import com.aimtech.arrowcore.domain.business.usecases.management.companyrepresentative_module.AssociateRepresentativeToCompanyService;
+import com.aimtech.arrowcore.domain.business.usecases.management.companyrepresentative_module.CreateCompanyRepresentativeService;
+import com.aimtech.arrowcore.domain.business.usecases.management.companyrepresentative_module.DissociateRepresentativeToCompanyService;
+import com.aimtech.arrowcore.domain.business.usecases.management.companyrepresentative_module.FindRepresentationsByCompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

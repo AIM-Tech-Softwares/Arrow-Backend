@@ -5,7 +5,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.management.StreetTypeC
 import com.aimtech.arrowcore.domain.business.dto.requests.management.StreetTypeUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetTypeDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.StreetTypeSummaryResponse;
-import com.aimtech.arrowcore.domain.business.usecases.streettype_module.*;
+import com.aimtech.arrowcore.domain.business.usecases.management.streettype_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

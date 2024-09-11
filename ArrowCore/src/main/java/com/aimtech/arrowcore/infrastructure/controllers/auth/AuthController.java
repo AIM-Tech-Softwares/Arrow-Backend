@@ -4,9 +4,9 @@ import com.aimtech.arrowcore.domain.business.dto.requests.auth.LoginWithUsername
 import com.aimtech.arrowcore.domain.business.dto.requests.auth.RecoveryPasswordFromTokenRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.auth.RecoveryPasswordRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.auth.LoginWithUsernameAndPasswordResponse;
-import com.aimtech.arrowcore.domain.business.usecases.auth_module.GeneratePasswordRecoveryTokenService;
-import com.aimtech.arrowcore.domain.business.usecases.auth_module.LoginWithUsernameAndPasswordService;
-import com.aimtech.arrowcore.domain.business.usecases.auth_module.RecoveryPasswordFromTokenService;
+import com.aimtech.arrowcore.domain.business.usecases.auth.GeneratePasswordRecoveryTokenService;
+import com.aimtech.arrowcore.domain.business.usecases.auth.LoginWithUsernameAndPasswordService;
+import com.aimtech.arrowcore.domain.business.usecases.auth.RecoveryPasswordFromTokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

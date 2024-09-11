@@ -5,7 +5,7 @@ import com.aimtech.arrowcore.domain.business.dto.requests.management.CityCreateR
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CityUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CityDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CitySummaryResponse;
-import com.aimtech.arrowcore.domain.business.usecases.city_module.*;
+import com.aimtech.arrowcore.domain.business.usecases.management.city_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CountryCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CountryUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CountryDetailResponse;
-import com.aimtech.arrowcore.domain.business.usecases.country_module.*;
+import com.aimtech.arrowcore.domain.business.usecases.management.country_module.*;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.aimtech.arrowcore.core.annotation.CheckSecurity;
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.admin.UserRegisterRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.admin.UserRegisterResponse;
-import com.aimtech.arrowcore.domain.business.usecases.user_module.CreateUserService;
+import com.aimtech.arrowcore.domain.business.usecases.admin.user_module.CreateUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
