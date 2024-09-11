@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,4 +18,10 @@ public class StreetTypeDetailResponse {
     private String streetTypeName;
 
     private String streetTypeAbbreviation;
+
+    private Boolean isActive;
+
+    private OffsetDateTime createdAt;
+
+    private OffsetDateTime updatedAt;
 }

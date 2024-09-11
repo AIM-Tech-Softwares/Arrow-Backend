@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class CreateCompanyRepresentativeService {
     private final CompanyRepresentativeMapper companyRepresentativeMapper;
     private final MessageSource messageSource;
 
+    @Transactional
     public CompanyRepresentativeDetailResponse execute(
             CompanyRepresentativeCreateRequest request,
             UUID externalCompanyId

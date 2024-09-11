@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class DissociateRepresentativeToCompanyService {
     private final CompanyRepresentativeRepository companyRepresentativeRepository;
     private final MessageSource messageSource;
 
+    @Transactional
     public void execute(RepresentativeCompanyRequest request, UUID externalCompanyId) {
         Company company = companyRepository.findByExternalId(externalCompanyId).orElseThrow(
                 () -> new ResourceNotFoundedException(

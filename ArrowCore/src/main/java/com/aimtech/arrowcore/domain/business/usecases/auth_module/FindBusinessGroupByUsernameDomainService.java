@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class FindBusinessGroupByUsernameDomainService {
     private final BusinessGroupMapper businessGroupMapper;
     private final MessageSource messageSource;
 
+    @Transactional(readOnly = true)
     public BusinessGroupResponse execute(String username) {
         String domain = username.split("@")[1];
         BusinessGroup businessGroup = businessGroupRepository.findByTenantDomain(domain).orElseThrow(

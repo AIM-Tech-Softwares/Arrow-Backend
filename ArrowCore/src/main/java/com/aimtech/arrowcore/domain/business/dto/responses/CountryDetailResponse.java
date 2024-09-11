@@ -16,4 +16,6 @@ public class CountryDetailResponse {
     private String countryName;
 
     private String isoCode;
+
+    private Boolean isActive;
 }
