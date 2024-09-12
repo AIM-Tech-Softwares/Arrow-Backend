@@ -1,5 +1,6 @@
 package com.aimtech.arrowcore.infrastructure.controllers.management.addresses;
 
+import com.aimtech.arrowcore.core.annotation.CheckSecurity;
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CityCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CityUpdateRequest;
@@ -30,6 +31,7 @@ public class CityController implements CityControllerOpenApi {
 
     @Override
     @GetMapping
+    @CheckSecurity.City.CanRead
     public ResponseEntity<Page<CitySummaryResponse>> findAll(
             Pageable pageable,
             @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
@@ -40,6 +42,7 @@ public class CityController implements CityControllerOpenApi {
 
     @Override
     @GetMapping("/{cityId}")
+    @CheckSecurity.City.CanRead
     public ResponseEntity<CityDetailResponse> findById(@Valid @PathVariable Long cityId) {
         CityDetailResponse result = this.findCityByIdService.execute(cityId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -47,6 +50,7 @@ public class CityController implements CityControllerOpenApi {
 
     @Override
     @PostMapping
+    @CheckSecurity.City.CanCreate
     public ResponseEntity<Void> create(@Valid @RequestBody CityCreateRequest request) {
         CityDetailResponse result = this.createCityService.execute(request);
 
@@ -56,6 +60,8 @@ public class CityController implements CityControllerOpenApi {
 
     @Override
     @PutMapping("/{cityId}")
+    @CheckSecurity.City.CanUpdate
+    @CheckSecurity.City.CanChangeStatus
     public ResponseEntity<CityDetailResponse> update(
             @Valid @RequestBody CityUpdateRequest request,
             @Valid @PathVariable Long cityId
@@ -66,6 +72,7 @@ public class CityController implements CityControllerOpenApi {
 
     @Override
     @PatchMapping("/{cityId}/change-status")
+    @CheckSecurity.City.CanChangeStatus
     public ResponseEntity<Void> changeStatus(@PathVariable Long cityId) {
         this.changeCityStatusService.execute(cityId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

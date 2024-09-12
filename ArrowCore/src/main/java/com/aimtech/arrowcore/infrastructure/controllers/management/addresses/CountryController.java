@@ -1,5 +1,6 @@
 package com.aimtech.arrowcore.infrastructure.controllers.management.addresses;
 
+import com.aimtech.arrowcore.core.annotation.CheckSecurity;
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CountryCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CountryUpdateRequest;
@@ -30,6 +31,7 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @GetMapping
+    @CheckSecurity.Country.CanRead
     public ResponseEntity<Page<CountryDetailResponse>> findAll(
             Pageable pageable,
             @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
@@ -40,6 +42,7 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @GetMapping("/{internalId}")
+    @CheckSecurity.Country.CanRead
     public ResponseEntity<CountryDetailResponse> findById(@PathVariable @Valid Long internalId) {
         CountryDetailResponse result = this.findCountryByInternalIdService.execute(internalId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -47,6 +50,7 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @GetMapping("/find-by")
+    @CheckSecurity.Country.CanRead
     public ResponseEntity<CountryDetailResponse> findByIsoCode(@RequestParam(name = "isoCode") @Valid String isoCode) {
         CountryDetailResponse result = this.findCountryByIsoCodeService.execute(isoCode);
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -54,6 +58,7 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @PostMapping
+    @CheckSecurity.Country.CanCreate
     public ResponseEntity<Void> create(@Valid @RequestBody CountryCreateRequest request) {
         CountryDetailResponse result = this.createCountryService.execute(request);
 
@@ -63,6 +68,8 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @PutMapping("/{internalId}")
+    @CheckSecurity.Country.CanUpdate
+    @CheckSecurity.Country.CanChangeStatus
     public ResponseEntity<CountryDetailResponse> update(
             @Valid @RequestBody CountryUpdateRequest request,
             @PathVariable @Valid Long internalId
@@ -73,6 +80,7 @@ public class CountryController implements CountryControllerOpenApi {
 
     @Override
     @PatchMapping("/{countryId}/change-status")
+    @CheckSecurity.Country.CanChangeStatus
     public ResponseEntity<Void> changeStatus(@PathVariable Long countryId) {
         this.changeCountryStatusService.execute(countryId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

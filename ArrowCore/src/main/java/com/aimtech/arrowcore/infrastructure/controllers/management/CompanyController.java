@@ -74,6 +74,7 @@ public class CompanyController implements CompanyControllerOpenApi {
     @Override
     @PutMapping("/{externalId}")
     @CheckSecurity.Company.CanUpdate
+    @CheckSecurity.Company.CanChangeStatus
     public ResponseEntity<CompanyDetailResponse> updateCompany(
             @Valid @RequestBody CompanyUpdateRequest request,
             @Valid @PathVariable UUID externalId

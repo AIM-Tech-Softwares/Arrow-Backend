@@ -1,5 +1,6 @@
 package com.aimtech.arrowcore.infrastructure.controllers.management.addresses;
 
+import com.aimtech.arrowcore.core.annotation.CheckSecurity;
 import com.aimtech.arrowcore.core.utils.ResourceUriHelper;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.StreetTypeCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.StreetTypeUpdateRequest;
@@ -29,6 +30,7 @@ public class StreetTypeController implements StreetTypeControllerOpenApi {
 
     @Override
     @GetMapping
+    @CheckSecurity.StreetType.CanRead
     public ResponseEntity<Page<StreetTypeSummaryResponse>> findAll(
             Pageable pageable,
             @RequestParam(required = false, defaultValue = "ALL") FilterStatusEnum status
@@ -39,6 +41,7 @@ public class StreetTypeController implements StreetTypeControllerOpenApi {
 
     @Override
     @GetMapping("/{streetTypeId}")
+    @CheckSecurity.StreetType.CanRead
     public ResponseEntity<StreetTypeDetailResponse> findById(@Valid @PathVariable Long streetTypeId) {
         StreetTypeDetailResponse result = this.findStreetTypeByInternalIdService.execute(streetTypeId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
@@ -46,6 +49,7 @@ public class StreetTypeController implements StreetTypeControllerOpenApi {
 
     @Override
     @PostMapping
+    @CheckSecurity.StreetType.CanCreate
     public ResponseEntity<Void> create(@Valid @RequestBody StreetTypeCreateRequest request) {
         StreetTypeDetailResponse result = this.createStreetTypeService.execute(request);
 
@@ -55,6 +59,7 @@ public class StreetTypeController implements StreetTypeControllerOpenApi {
 
     @Override
     @PutMapping("/{streetTypeId}")
+    @CheckSecurity.StreetType.CanUpdate
     public ResponseEntity<StreetTypeDetailResponse> update(
             @Valid @RequestBody StreetTypeUpdateRequest request,
             @Valid @PathVariable Long streetTypeId
@@ -65,6 +70,7 @@ public class StreetTypeController implements StreetTypeControllerOpenApi {
 
     @Override
     @PatchMapping("/{streetTypeId}/change-status")
+    @CheckSecurity.StreetType.CanChangeStatus
     public ResponseEntity<Void> changeStatus(@PathVariable Long streetTypeId) {
         this.changeStatusStreetTypeService.execute(streetTypeId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
