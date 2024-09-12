@@ -27,7 +27,7 @@ public interface CompanyMapper {
             expression = "java(entity.getParentCompany() != null ? entity.getParentCompany().getCnpj() : null)"
     )
     @Mapping(
-            target = "CountryName",
+            target = "countryName",
             expression = "java(entity.getCity().getState().getCountry().getCountryName())"
     )
     @Mapping(
@@ -51,7 +51,7 @@ public interface CompanyMapper {
             expression = "java(entity.getParentCompany() != null ? entity.getParentCompany().getCnpj() : null)"
     )
     @Mapping(
-            target = "CountryName",
+            target = "countryName",
             expression = "java(entity.getCity().getState().getCountry().getCountryName())"
     )
     @Mapping(
