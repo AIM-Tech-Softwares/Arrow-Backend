@@ -39,6 +39,13 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(AccountIsBlockedException.class)
+    public ResponseEntity<CustomErrorResponse> accountIsBlockedExceptionHandler(AccountIsBlockedException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<CustomErrorResponse> usernameAlreadyExistsExceptionHandler(UsernameAlreadyExistsException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;

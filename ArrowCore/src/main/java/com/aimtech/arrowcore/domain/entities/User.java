@@ -3,10 +3,7 @@ package com.aimtech.arrowcore.domain.entities;
 import com.aimtech.arrowcore.core.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.envers.AuditJoinTable;
-import org.hibernate.envers.AuditTable;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
+import org.hibernate.envers.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,17 +40,48 @@ public class User implements UserDetails {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "email", unique = true)
+    private String email;
+
+    @NotAudited
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "last_password_change_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastPasswordChangeDate;
+
+    @NotAudited
+    @Column(name = "last_failed_login_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastFailedLoginTime;
+
+    @NotAudited
     @Column(name = "last_login")
     private OffsetDateTime lastLogin;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
+    @NotAudited
     @Column(name = "is_first_login", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
     private boolean isFirstLogin = true;
+
+    @NotAudited
+    @Column(name = "is_password_expired", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isPasswordExpired;
+
+    @NotAudited
+    @Column(name = "is_account_expired", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isAccountExpired;
+
+    @NotAudited
+    @Column(name = "is_account_locked", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isAccountLocked;
+
+    @NotAudited
+    @Column(name = "filed_login_attempts")
+    private Integer failedLoginAttempts;
 
     @ManyToOne
     @JoinColumn(name = "business_group")
@@ -100,16 +128,14 @@ public class User implements UserDetails {
         return true;
     }
 
-    // # TODO: Implementar a lógica para tratar esses casos
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !this.isAccountLocked;
     }
 
-    // # TODO: Implementar a lógica para tratar esses casos
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return !this.isPasswordExpired;
     }
 
     @Override
