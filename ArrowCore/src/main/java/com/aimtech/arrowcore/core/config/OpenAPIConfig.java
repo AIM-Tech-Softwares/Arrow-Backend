@@ -2,7 +2,6 @@ package com.aimtech.arrowcore.core.config;
 
 import com.aimtech.arrowcore.domain.business.dto.responses.errors.CustomErrorResponse;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
@@ -12,10 +11,10 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -38,6 +37,7 @@ public class OpenAPIConfig {
     private final MessageSource messageSource;
     private final Content errorResponse = new Content();
 
+    public static final String SECURITY_SCHEME = "bearerAuth";
     private static final String LICENSE = "Apache 2.0";
     private static final String LICENSE_URL = "https://www.apache.org/licenses/LICENSE-2.0";
     private static final List<String> SUPPORTED_LANGUAGES = List.of("pt-BR", "en-US", "es");
@@ -47,7 +47,6 @@ public class OpenAPIConfig {
         return GroupedOpenApi.builder()
                 .group("arrow-core-internal")
                 .addOpenApiCustomizer(this::customizeInternalApi)
-                .addOpenApiCustomizer(this::addGlobalHeaders)
                 .addOpenApiCustomizer(exceptionResponseCustomizer())
                 .build();
     }
@@ -58,7 +57,6 @@ public class OpenAPIConfig {
                 .group("arrow-core-public")
                 .pathsToMatch("/public/**")
                 .addOpenApiCustomizer(this::customizePublicApi)
-                .addOpenApiCustomizer(this::addGlobalHeaders)
                 .addOpenApiCustomizer(exceptionResponseCustomizer())
                 .build();
     }
@@ -80,7 +78,13 @@ public class OpenAPIConfig {
                         .license(new License().name(LICENSE).url(LICENSE_URL)))
                 .externalDocs(new ExternalDocumentation().description("Postman Collection").url("https://www.google.com.br/"))
                 .tags(generateTags())
-                .getPaths().values().forEach(this::generateHttpResponseStatus);
+                .components(openApi.getComponents()
+                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")
+                                .name(SECURITY_SCHEME))
+                );
     }
 
     private void customizePublicApi(OpenAPI openApi) {
@@ -163,17 +167,6 @@ public class OpenAPIConfig {
         );
     }
 
-    private void addGlobalHeaders(OpenAPI openApi) {
-        openApi.getPaths().values()
-                .forEach(pathItem -> pathItem.readOperations().forEach(operation ->
-                        operation.addParametersItem(new Parameter()
-                                .in(ParameterIn.HEADER.toString())
-                                .name("Accept-Language")
-                                .description("Language for responses")
-                                .required(false)
-                                .schema(createLanguageSchema()))));
-    }
-
     private Schema<String> createLanguageSchema() {
         return new Schema<String>()
                 .type("string")
@@ -183,7 +176,6 @@ public class OpenAPIConfig {
     private void generateHttpResponseStatus(PathItem pathItem) {
         pathItem.readOperationsMap().forEach(this::generateHttpResponseStatus);
     }
-
 
     @SuppressWarnings("DuplicateBranchesInSwitch")
     private void generateHttpResponseStatus(PathItem.HttpMethod httpMethod, Operation operation) {

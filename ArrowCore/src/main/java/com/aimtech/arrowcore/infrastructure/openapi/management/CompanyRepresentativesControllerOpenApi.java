@@ -1,6 +1,7 @@
 package com.aimtech.arrowcore.infrastructure.openapi.management;
 
 import com.aimtech.arrowcore.core.annotation.ValidCNPJ;
+import com.aimtech.arrowcore.core.config.OpenAPIConfig;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyRepresentativeCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.RepresentativeCompanyRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyRepresentativeSummaryResponse;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Tag(name = "Management | CompanyRepresentatives")
+@SecurityRequirement(name = OpenAPIConfig.SECURITY_SCHEME)
 public interface CompanyRepresentativesControllerOpenApi {
 
     @GetMapping("/{cnpj}")

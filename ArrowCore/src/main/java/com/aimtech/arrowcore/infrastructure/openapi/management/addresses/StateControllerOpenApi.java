@@ -1,15 +1,18 @@
 package com.aimtech.arrowcore.infrastructure.openapi.management.addresses;
 
+import com.aimtech.arrowcore.core.config.OpenAPIConfig;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.StateCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.StateUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.StateDetailResponse;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Management | State")
+@SecurityRequirement(name = OpenAPIConfig.SECURITY_SCHEME)
 public interface StateControllerOpenApi {
 
 
@@ -32,7 +36,7 @@ public interface StateControllerOpenApi {
                     )),
     })
     ResponseEntity<Page<StateDetailResponse>> findAll(
-            Pageable pageable,
+            @Parameter(hidden = true) Pageable pageable,
             @RequestParam FilterStatusEnum status
     );
 

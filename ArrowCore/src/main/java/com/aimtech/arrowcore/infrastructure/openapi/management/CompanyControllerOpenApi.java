@@ -1,15 +1,18 @@
 package com.aimtech.arrowcore.infrastructure.openapi.management;
 
+import com.aimtech.arrowcore.core.config.OpenAPIConfig;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyCreateRequest;
 import com.aimtech.arrowcore.domain.business.dto.requests.management.CompanyUpdateRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanyDetailResponse;
 import com.aimtech.arrowcore.domain.business.dto.responses.management.CompanySummaryResponse;
 import com.aimtech.arrowcore.domain.enums.FilterStatusEnum;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Tag(name = "Management | Company")
+@SecurityRequirement(name = OpenAPIConfig.SECURITY_SCHEME)
 public interface CompanyControllerOpenApi {
 
 
@@ -33,7 +37,7 @@ public interface CompanyControllerOpenApi {
                     )),
     })
     ResponseEntity<Page<CompanySummaryResponse>> findPageableCompanies(
-            Pageable pageable,
+            @Parameter(hidden = true) Pageable pageable,
             FilterStatusEnum status
     );
 
