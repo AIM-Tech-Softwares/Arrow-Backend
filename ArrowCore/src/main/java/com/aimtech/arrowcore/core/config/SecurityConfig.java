@@ -39,10 +39,16 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(
-//                        auth -> auth
-//                                .anyRequest().authenticated()
-//                )
+                .authorizeHttpRequests(
+                        auth -> auth
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-resources/**"
+                                ).permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(
                         conf -> conf.jwt(
                                 jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
