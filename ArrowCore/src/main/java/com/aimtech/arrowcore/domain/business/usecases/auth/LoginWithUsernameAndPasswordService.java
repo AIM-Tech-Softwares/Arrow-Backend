@@ -4,6 +4,7 @@ import com.aimtech.arrowcore.core.properties.AppProperties;
 import com.aimtech.arrowcore.core.properties.SecurityProperties;
 import com.aimtech.arrowcore.domain.business.dto.requests.auth.LoginWithUsernameAndPasswordRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.auth.LoginWithUsernameAndPasswordResponse;
+import com.aimtech.arrowcore.domain.business.usecases.admin.user_module.CustomUserDetailsService;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.AccountIsBlockedException;
@@ -30,6 +31,7 @@ public class LoginWithUsernameAndPasswordService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
+    private final CustomUserDetailsService customUserDetailsService;
     private final GenerateJwtTokenService generateJwtTokenService;
     private final SecurityProperties securityProperties;
     private final AppProperties appProperties;
@@ -37,25 +39,7 @@ public class LoginWithUsernameAndPasswordService {
 
     public LoginWithUsernameAndPasswordResponse execute(LoginWithUsernameAndPasswordRequest request) {
        try {
-           User user = userRepository.findByUsername(request.getUsername()).orElseThrow(
-                   () -> new UsernameOrPasswordInvalidException(
-                           messageSource.getMessage(
-                                   "arrowcore.exceptions.UsernameOrPasswordInvalidException",
-                                   null,
-                                   LocaleContextHolder.getLocale()
-                           )
-                   )
-           );
-
-           if (!user.getIsActive()) {
-               throw new UsernameOrPasswordInvalidException(
-                       messageSource.getMessage(
-                               "arrowcore.exceptions.UsernameOrPasswordInvalidException",
-                               null,
-                               LocaleContextHolder.getLocale()
-                       )
-               );
-           }
+           User user = customUserDetailsService.loadUserByUsername(request.getUsername());
 
            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                throw new UsernameOrPasswordInvalidException(

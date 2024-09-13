@@ -1,6 +1,7 @@
 package com.aimtech.arrowcore.core.config;
 
 import com.aimtech.arrowcore.core.properties.SecurityProperties;
+import com.aimtech.arrowcore.domain.business.usecases.admin.user_module.CustomUserDetailsService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -8,6 +9,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +18,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -24,6 +31,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,7 +43,7 @@ import java.util.stream.Stream;
 public class SecurityConfig {
 
     private final SecurityProperties securityProperties;
-
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,7 +63,8 @@ public class SecurityConfig {
                         conf -> conf.jwt(
                                 jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
                         )
-                );
+                )
+                .userDetailsService(customUserDetailsService);
         return http.build();
     }
 
@@ -71,17 +80,20 @@ public class SecurityConfig {
                 this.securityProperties.getKey().getPublicKey()
         ).build();
 
-        jwtDecoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(
+        OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(
                 this.securityProperties.getToken().getIssuer()
-        ));
+        );
 
-        jwtDecoder.setJwtValidator((jwt) -> {
-            List<String> audiences = jwt.getAudience();
+        OAuth2TokenValidator<Jwt> withAudience = token -> {
+            List<String> audiences = token.getAudience();
             if (!audiences.contains(audience)) {
-                throw new JwtException("Invalid audience: " + audience);
+                return OAuth2TokenValidatorResult.failure(new OAuth2Error("invalid_token", "Invalid audience", null));
             }
             return OAuth2TokenValidatorResult.success();
-        });
+        };
+
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withIssuer, withAudience);
+        jwtDecoder.setJwtValidator(validator);
 
         return jwtDecoder;
     }
@@ -101,10 +113,14 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            String username = jwt.getClaimAsString("sub");
             String scope = jwt.getClaimAsString("scope");
+
             if (scope == null || scope.isEmpty()) {
                 return List.of();
             }
+
+            customUserDetailsService.loadUserByUsername(username);
 
             return Stream.of(scope.split(" "))
                     .map(SimpleGrantedAuthority::new)

@@ -122,10 +122,9 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
-    // # TODO: Implementar a lógica para tratar esses casos
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !this.isAccountExpired;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.aimtech.arrowcore.core.utils;
 
+import com.aimtech.arrowcore.domain.business.usecases.admin.user_module.CustomUserDetailsService;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.InvalidCurrentUserException;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AuthUtils {
-    private final UserRepository userRepository;
+    private final CustomUserDetailsService customUserDetailsService;
     private final MessageSource messageSource;
 
     public static String getUserTenant() {
@@ -39,15 +40,7 @@ public class AuthUtils {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof Jwt jwtPrincipal) {
             String username = jwtPrincipal.getSubject();
-            return this.userRepository.findByUsername(username).orElseThrow(
-                    () -> new InvalidCurrentUserException(
-                            messageSource.getMessage(
-                                    "arrowcore.exceptions.InvalidCurrentUserException",
-                                    null,
-                                    LocaleContextHolder.getLocale()
-                            )
-                    )
-            );
+            return this.customUserDetailsService.loadUserByUsername(username);
         } else {
             throw new InvalidCurrentUserException(
                     messageSource.getMessage(
