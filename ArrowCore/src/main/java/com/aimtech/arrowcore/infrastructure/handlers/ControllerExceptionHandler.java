@@ -39,6 +39,20 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
+    @ExceptionHandler(NewPasswordSameAsOldException.class)
+    public ResponseEntity<CustomErrorResponse> newPasswordSameAsOldExceptionHandler(NewPasswordSameAsOldException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(OldPasswordDoesNotMatchException.class)
+    public ResponseEntity<CustomErrorResponse> oldPasswordDoesNotMatchExceptionHandler(OldPasswordDoesNotMatchException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomErrorResponse err = getCustomError(status, ex.getMessage(), request);
+        return ResponseEntity.status(status).body(err);
+    }
+
     @ExceptionHandler(AccountIsBlockedException.class)
     public ResponseEntity<CustomErrorResponse> accountIsBlockedExceptionHandler(AccountIsBlockedException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;

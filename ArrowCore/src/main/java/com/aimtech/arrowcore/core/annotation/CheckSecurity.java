@@ -16,7 +16,12 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface CanRead {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CRETE.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_READ_EXT.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanReadExt {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CREATE.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanCreate {}
@@ -30,6 +35,26 @@ public @interface CheckSecurity {
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanChangeStatus {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CHANGE_EXT_PW.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeExtPassword {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_UNLOCK_EXT_ACC.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUnlockExtAccount {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CHANGE_ME_PW.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeMePassword {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_UPDATE_ME.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUpdateMe {}
     }
 
     @interface Company{

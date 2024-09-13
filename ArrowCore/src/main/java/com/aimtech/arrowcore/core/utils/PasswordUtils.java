@@ -19,7 +19,8 @@ public class PasswordUtils {
     private static final String UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
     private static final String DIGITS = "0123456789";
-    private static final String ALL_CHARS = UPPERCASE_CHARS + LOWERCASE_CHARS + DIGITS;
+    private static final String SYMBOLS = "!@#$%^&*()-_+=<>?";
+    private static final String ALL_CHARS = UPPERCASE_CHARS + LOWERCASE_CHARS + DIGITS + SYMBOLS;
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public String generateRandomPassword(int length) {
@@ -36,8 +37,9 @@ public class PasswordUtils {
         password.append(UPPERCASE_CHARS.charAt(RANDOM.nextInt(UPPERCASE_CHARS.length())));
         password.append(LOWERCASE_CHARS.charAt(RANDOM.nextInt(LOWERCASE_CHARS.length())));
         password.append(DIGITS.charAt(RANDOM.nextInt(DIGITS.length())));
+        password.append(SYMBOLS.charAt(RANDOM.nextInt(SYMBOLS.length())));
 
-        for (int i = 3; i < length; i++) {
+        for (int i = 4; i < length; i++) {
             password.append(ALL_CHARS.charAt(RANDOM.nextInt(ALL_CHARS.length())));
         }
 

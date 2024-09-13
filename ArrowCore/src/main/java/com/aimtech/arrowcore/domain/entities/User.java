@@ -61,11 +61,11 @@ public class User implements UserDetails {
     private OffsetDateTime lastLogin;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
     @NotAudited
     @Column(name = "is_first_login", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
-    private boolean isFirstLogin = true;
+    private Boolean isFirstLogin = true;
 
     @NotAudited
     @Column(name = "is_password_expired", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")

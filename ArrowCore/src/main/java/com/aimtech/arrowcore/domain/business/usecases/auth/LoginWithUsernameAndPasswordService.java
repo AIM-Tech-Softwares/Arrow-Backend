@@ -47,6 +47,16 @@ public class LoginWithUsernameAndPasswordService {
                    )
            );
 
+           if (!user.getIsActive()) {
+               throw new UsernameOrPasswordInvalidException(
+                       messageSource.getMessage(
+                               "arrowcore.exceptions.UsernameOrPasswordInvalidException",
+                               null,
+                               LocaleContextHolder.getLocale()
+                       )
+               );
+           }
+
            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
                throw new UsernameOrPasswordInvalidException(
                        messageSource.getMessage(
