@@ -6,22 +6,26 @@ import com.aimtech.arrowcore.core.utils.PasswordUtils;
 import com.aimtech.arrowcore.domain.business.dto.requests.admin.UserRegisterRequest;
 import com.aimtech.arrowcore.domain.business.dto.responses.admin.UserRegisterResponse;
 import com.aimtech.arrowcore.domain.business.mappers.admin.UserMapper;
+import com.aimtech.arrowcore.domain.business.usecases.admin.systemparameter_module.GetSystemParameterService;
 import com.aimtech.arrowcore.domain.entities.Profile;
 import com.aimtech.arrowcore.domain.entities.User;
 import com.aimtech.arrowcore.domain.repository.ProfileRepository;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
+import com.aimtech.arrowcore.infrastructure.exceptions.DuplicateResourceException;
+import com.aimtech.arrowcore.infrastructure.exceptions.InvalidDomainForTenantException;
 import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,26 +38,68 @@ public class CreateUserService {
     private final MessageSource messageSource;
     private final AuthUtils authUtils;
     private final PasswordUtils passwordUtils;
+    private final GetSystemParameterService getSystemParameterService;
+
+    private static final String ADMIN_USER_USE_INTERNAL_DOMAIN = "admin.user.use_internal_domain";
 
     @Transactional
     public UserRegisterResponse execute(UserRegisterRequest dto) {
-        if (userRepository.existsByUsername(dto.getUsername())) {
+        try {
+            User user = prepareUserForRegistration(dto);
+
+            validateUsernameUniqueness(user.getUsername());
+
+            Set<Profile> profiles = getProfilesByIds(dto.getProfileIds());
+            user.setProfiles(profiles);
+
+            String tempPassword = passwordUtils.generateRandomPassword(8);
+            setUserPasswordAndDefaults(user, tempPassword);
+
+            // # TODO: Implementar o envio de email.
+            System.out.println("==========================================");
+            System.out.println("Your temp password is: " + tempPassword);
+            System.out.println("==========================================");
+
+            user = userRepository.save(user);
+            return userMapper.toResponse(user);
+        } catch (DataIntegrityViolationException ex) {
+            handleDataIntegrityViolationException(dto, ex);
+            throw ex;
+        }
+    }
+
+    private User prepareUserForRegistration(UserRegisterRequest dto) {
+        Boolean useInternalDomain = getSystemParameterService.getBooleanValue(ADMIN_USER_USE_INTERNAL_DOMAIN);
+
+        User user = userMapper.toUser(dto);
+        User currentUser = authUtils.getCurrentUser();
+        user.setBusinessGroup(currentUser.getBusinessGroup());
+        user.setProfiles(new HashSet<>());
+
+        if (useInternalDomain) {
+            user.setUsername(user.getUsername() + "@" + currentUser.getBusinessGroup().getTenantDomain());
+        } else {
+            validateUsername(user.getUsername(), currentUser.getBusinessGroup().getTenantDomain());
+        }
+
+        return user;
+    }
+
+    private void validateUsernameUniqueness(String username) {
+        if (userRepository.existsByUsername(username)) {
             throw new UsernameAlreadyExistsException(
                     messageSource.getMessage(
                             "arrowcore.exceptions.UsernameAlreadyExistsException",
-                            new Object[]{dto.getUsername()},
+                            new Object[]{username},
                             LocaleContextHolder.getLocale()
                     )
             );
         }
-        User user = userMapper.toUser(dto);
-        user.setProfiles(new HashSet<>());
+    }
 
-        User currentUser = authUtils.getCurrentUser();
-        user.setBusinessGroup(currentUser.getBusinessGroup());
-
-        List<Profile> profileList = new ArrayList<>();
-        for (Long profileId : dto.getProfileIds()) {
+    private Set<Profile> getProfilesByIds(List<Long> profileIds) {
+        Set<Profile> profiles = new HashSet<>();
+        for (Long profileId : profileIds) {
             Profile profile = profileRepository.findById(profileId).orElseThrow(
                     () -> new ResourceNotFoundedException(
                             messageSource.getMessage(
@@ -63,24 +109,42 @@ public class CreateUserService {
                             )
                     )
             );
-            profileList.add(profile);
+            profiles.add(profile);
         }
-        profileList.forEach(profile -> {
-            user.getProfiles().add(profile);
-        });
+        return profiles;
+    }
 
-        String tempPassword = passwordUtils.generateRandomPassword(8);
-
+    private void setUserPasswordAndDefaults(User user, String tempPassword) {
         user.setExternalId(IdGenerator.generateExternalId());
         user.setPassword(passwordEncoder.encode(tempPassword));
+        user.setEmail(user.getEmail() == null ? user.getUsername() : user.getEmail());
+        user.setIsAccountLocked(false);
+        user.setIsAccountExpired(false);
+        user.setIsPasswordExpired(false);
+    }
 
-        // # TODO: Implementar o envio de email.
-        System.out.println("==========================================");
-        System.out.println("Your temp password is: " + tempPassword);
-        System.out.println("==========================================");
+    private void validateUsername(String username, String tenantDomain) {
+        String userDomain = username.split("@")[1];
+        if (!userDomain.equals(tenantDomain)) {
+            throw new InvalidDomainForTenantException(
+                    messageSource.getMessage(
+                            "arrowcore.exceptions.InvalidDomainForTenantException",
+                            null,
+                            LocaleContextHolder.getLocale()
+                    )
+            );
+        }
+    }
 
-        User inserted = userRepository.save(user);
-
-        return userMapper.toResponse(inserted);
+    private void handleDataIntegrityViolationException(UserRegisterRequest dto, DataIntegrityViolationException ex) {
+        if (ex.getMessage().contains("uc_tb_user_email")) {
+            throw new DuplicateResourceException(
+                    messageSource.getMessage(
+                            "arrowcore.exceptions.DuplicateResourceException",
+                            new Object[]{"Email", dto.getEmail(), "User"},
+                            LocaleContextHolder.getLocale()
+                    )
+            );
+        }
     }
 }

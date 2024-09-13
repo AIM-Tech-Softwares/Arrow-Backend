@@ -1,5 +1,7 @@
 package com.aimtech.arrowcore.domain.business.dto.requests.admin;
 
+import com.aimtech.arrowcore.core.annotation.ValidEmailIsRequired;
+import com.aimtech.arrowcore.core.annotation.ValidUsername;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -37,8 +39,13 @@ public class UserRegisterRequest {
             example = "john.doe@example.com",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @Email(message = "{arrowcore.messages.errors.validation.Email}")
+    @ValidUsername
     private String username;
+
+    @Email(message = "{arrowcore.messages.errors.validation.Email}")
+    @ValidEmailIsRequired
+    private String email;
+
 
     @Schema(description = "Status indicating whether the user is active", example = "true")
     private Boolean isActive;
