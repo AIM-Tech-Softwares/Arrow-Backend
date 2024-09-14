@@ -57,6 +57,28 @@ public @interface CheckSecurity {
         @interface CanUpdateMe {}
     }
 
+    @interface Profile{
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_READ.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanRead {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_CREATE.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanCreate {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_UPDATE.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUpdate {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_CHANGE_STATUS.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeStatus {}
+    }
+
     @interface Company{
         @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COMPANY_READ.roleName) and isAuthenticated()")
         @Retention(RUNTIME)

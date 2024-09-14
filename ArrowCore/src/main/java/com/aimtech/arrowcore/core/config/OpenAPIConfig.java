@@ -118,6 +118,14 @@ public class OpenAPIConfig {
                         )),
 
                 new Tag()
+                        .name("Admin | Profile")
+                        .description(messageSource.getMessage(
+                                "arrowcore.openapi.tags.description.admin.ProfileController",
+                                null,
+                                locale
+                        )),
+
+                new Tag()
                         .name("Management | City")
                         .description(messageSource.getMessage(
                                 "arrowcore.openapi.tags.description.management.addresses.CityController",
