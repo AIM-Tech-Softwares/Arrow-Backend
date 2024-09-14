@@ -111,6 +111,13 @@ public @interface CheckSecurity {
         @interface CamAssociateAsBranch {}
     }
 
+    @interface Role {
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ROLE_LIST_ALL.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanRead {}
+    }
+
     @interface Country{
         @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COUNTRY_READ.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
