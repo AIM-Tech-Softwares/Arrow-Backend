@@ -110,6 +110,22 @@ public class OpenAPIConfig {
                         )),
 
                 new Tag()
+                        .name("Admin | Profile")
+                        .description(messageSource.getMessage(
+                                "arrowcore.openapi.tags.description.admin.ProfileController",
+                                null,
+                                locale
+                        )),
+
+                new Tag()
+                        .name("Admin | Role")
+                        .description(messageSource.getMessage(
+                                "arrowcore.openapi.tags.description.admin.RoleController",
+                                null,
+                                locale
+                        )),
+
+                new Tag()
                         .name("Admin | User")
                         .description(messageSource.getMessage(
                                 "arrowcore.openapi.tags.description.admin.UserController",

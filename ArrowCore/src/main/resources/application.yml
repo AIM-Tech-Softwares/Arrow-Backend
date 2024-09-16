@@ -39,6 +39,9 @@ arrowcore:
       recovery-token:
         expiry-in-seconds: ${PASSWORD_RECOVER_EXPIRATION_TOKEN_SECONDS:1800}
         redirect-uri: ${PASSWORD_RECOVER_REDIRECT_URI:http://localhost:5173/recover-password}
+      login-attempts:
+        max-attempts: 5
+        lockout-duration-in-seconds: 900
   security:
     key:
       private-key: classpath:keys/app.key
@@ -47,3 +50,17 @@ arrowcore:
       expiry-in-seconds: 3600
       issuer: arrow-core-microservice
       audience: arrow-system
+  system:
+    parameters:
+      - key: "system.theme"
+        value: "light"
+        type: "STRING"
+      - key: "system.email.notifications"
+        value: "true"
+        type: "BOOLEAN"
+      - key: "system.max.users"
+        value: "100"
+        type: "NUMBER"
+      - key: "admin.user.use_internal_domain"
+        value: "true"
+        type: "BOOLEAN"

@@ -24,6 +24,7 @@ public class AppProperties {
         private String defaultSchemaName;
         private Integer minimumPasswordLength;
         private final PasswordRecoveryToken recoveryToken = new PasswordRecoveryToken();
+        private final LoginAttempts loginAttempts = new LoginAttempts();
     }
 
     @Getter
@@ -31,5 +32,12 @@ public class AppProperties {
     public static class PasswordRecoveryToken {
         private Integer expiryInSeconds;
         private String redirectUri;
+    }
+
+    @Getter
+    @Setter
+    public static class LoginAttempts {
+        private Integer maxAttempts;
+        private Integer lockoutDurationInSeconds;
     }
 }

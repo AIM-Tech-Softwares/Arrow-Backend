@@ -39,7 +39,7 @@ public class Profile {
     private String description;
 
     @Column(nullable = false, name = "is_active")
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToMany(fetch = FetchType.EAGER)

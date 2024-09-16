@@ -1,7 +1,9 @@
 package com.aimtech.arrowcore.infrastructure.exceptions;
 
 
-public class UsernameOrPasswordInvalidException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class UsernameOrPasswordInvalidException extends AuthenticationException {
     public UsernameOrPasswordInvalidException(String message) {
         super(message);
     }

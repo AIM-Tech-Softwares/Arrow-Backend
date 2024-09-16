@@ -1,4 +1,4 @@
-package com.aimtech.arrowcore.domain.listners;
+package com.aimtech.arrowcore.domain.listeners;
 
 import com.aimtech.arrowcore.core.filters.IpAddressFilter;
 import com.aimtech.arrowcore.core.utils.AuthUtils;
