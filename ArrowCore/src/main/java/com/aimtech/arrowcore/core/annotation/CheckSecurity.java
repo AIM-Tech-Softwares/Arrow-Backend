@@ -16,7 +16,12 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface CanRead {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CRETE.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_READ_EXT.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanReadExt {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CREATE.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanCreate {}
@@ -27,6 +32,48 @@ public @interface CheckSecurity {
         @interface CanUpdate {}
 
         @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CHANGE_STATUS.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeStatus {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CHANGE_EXT_PW.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeExtPassword {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_UNLOCK_EXT_ACC.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUnlockExtAccount {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_CHANGE_ME_PW.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanChangeMePassword {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).USER_UPDATE_ME.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUpdateMe {}
+    }
+
+    @interface Profile{
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_READ.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanRead {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_CREATE.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanCreate {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_UPDATE.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanUpdate {}
+
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).PROFILE_CHANGE_STATUS.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanChangeStatus {}
@@ -53,15 +100,22 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface CanChangeStatus {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COMPANY_CHANGE_REPRESENTATIVES.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COMPANY_CHANGE_REPS.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanChangeRepresentatives {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COMPANY_ASSOCIATE_AS_BRANCH.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).COMPANY_ASSOC_BRANCH.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CamAssociateAsBranch {}
+    }
+
+    @interface Role {
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ROLE_LIST_ALL.roleName) and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface CanRead {}
     }
 
     @interface Country{
@@ -131,22 +185,22 @@ public @interface CheckSecurity {
     }
 
     @interface StreetType{
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).STREET_TYPE_READ.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ST_TYPE_READ.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanRead {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).STREET_TYPE_CREATE.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ST_TYPE_CREATE.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanCreate {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).STREET_TYPE_UPDATE.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ST_TYPE_UPDATE.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanUpdate {}
 
-        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).STREET_TYPE_CHANGE_STATUS.roleName) and isAuthenticated()")
+        @PreAuthorize("hasAuthority(T(com.aimtech.arrowcore.core.enums.RoleEnum).ST_TYPE_CHANGE_STATUS.roleName) and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface CanChangeStatus {}

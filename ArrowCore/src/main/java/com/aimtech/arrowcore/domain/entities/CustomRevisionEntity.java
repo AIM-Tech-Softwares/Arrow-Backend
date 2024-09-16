@@ -1,6 +1,6 @@
 package com.aimtech.arrowcore.domain.entities;
 
-import com.aimtech.arrowcore.domain.listners.CustomRevisionListener;
+import com.aimtech.arrowcore.domain.listeners.CustomRevisionListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

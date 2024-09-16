@@ -454,22 +454,14 @@ public class DataInitializationService {
     @Getter
     private static class BusinessGroupData {
         private final String internalId;
-        private final String externalId;
+        private final UUID externalId;
         private final String publicName;
         private final String tenantDomain;
         private final String schemaName;
 
         public BusinessGroupData(String internalId, String externalId, String publicName, String tenantDomain, String schemaName) {
             this.internalId = internalId;
-            this.externalId = externalId;
-            this.publicName = publicName;
-            this.tenantDomain = tenantDomain;
-            this.schemaName = schemaName;
-        }
-
-        public BusinessGroupData(String externalId, String publicName, String tenantDomain, String schemaName) {
-            this.internalId = null;
-            this.externalId = externalId;
+            this.externalId = UUID.fromString(externalId);
             this.publicName = publicName;
             this.tenantDomain = tenantDomain;
             this.schemaName = schemaName;
