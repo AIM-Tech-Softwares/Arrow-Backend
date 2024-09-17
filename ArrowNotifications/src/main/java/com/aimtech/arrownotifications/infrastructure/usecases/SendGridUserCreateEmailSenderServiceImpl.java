@@ -1,7 +1,7 @@
 package com.aimtech.arrownotifications.infrastructure.usecases;
 
 import com.aimtech.arrownotifications.core.properties.AppProperties;
-import com.aimtech.arrownotifications.domain.dto.request.UserCreateEmailSenderRequest;
+import com.aimtech.arrownotifications.infrastructure.messaging.message.UserCreateEmailSenderMessage;
 import com.aimtech.arrownotifications.domain.usecases.UserCreateEmailSenderService;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -30,7 +30,7 @@ public class SendGridUserCreateEmailSenderServiceImpl implements UserCreateEmail
     private final String subject = "Novo Usuário";
 
     @Override
-    public void execute(UserCreateEmailSenderRequest dto) {
+    public void execute(UserCreateEmailSenderMessage dto) {
         String senderFrom = this.appProperties.getEmailSender().getFrom();
         String friendlyName = this.appProperties.getEmailSender().getFriendlyName();
         Email from = new Email(senderFrom, friendlyName);

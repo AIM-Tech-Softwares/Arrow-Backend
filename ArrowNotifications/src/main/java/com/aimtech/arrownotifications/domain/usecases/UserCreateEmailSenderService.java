@@ -1,9 +1,10 @@
 package com.aimtech.arrownotifications.domain.usecases;
 
-import com.aimtech.arrownotifications.domain.dto.request.UserCreateEmailSenderRequest;
+import com.aimtech.arrownotifications.infrastructure.messaging.message.UserCreateEmailSenderMessage;
 
 public interface UserCreateEmailSenderService {
-    void execute(UserCreateEmailSenderRequest dto);
+
+    void execute(UserCreateEmailSenderMessage dto);
 
 }
 

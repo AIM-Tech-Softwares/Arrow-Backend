@@ -1,4 +1,4 @@
-package com.aimtech.arrownotifications.domain.dto.request;
+package com.aimtech.arrownotifications.infrastructure.messaging.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreateEmailSenderRequest {
+public class UserCreateEmailSenderMessage {
 
     private String userEmail;
     private String firstname;
