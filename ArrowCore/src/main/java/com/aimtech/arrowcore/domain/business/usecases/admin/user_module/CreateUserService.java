@@ -9,13 +9,16 @@ import com.aimtech.arrowcore.domain.business.mappers.admin.UserMapper;
 import com.aimtech.arrowcore.domain.business.usecases.admin.systemparameter_module.GetSystemParameterService;
 import com.aimtech.arrowcore.domain.entities.Profile;
 import com.aimtech.arrowcore.domain.entities.User;
+import com.aimtech.arrowcore.domain.events.UserCreatedEvent;
 import com.aimtech.arrowcore.domain.repository.ProfileRepository;
 import com.aimtech.arrowcore.domain.repository.UserRepository;
 import com.aimtech.arrowcore.infrastructure.exceptions.DuplicateResourceException;
 import com.aimtech.arrowcore.infrastructure.exceptions.InvalidDomainForTenantException;
 import com.aimtech.arrowcore.infrastructure.exceptions.ResourceNotFoundedException;
 import com.aimtech.arrowcore.infrastructure.exceptions.UsernameAlreadyExistsException;
+import com.aimtech.arrowcore.infrastructure.messaging.message.UserCreateEmailSenderMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,6 +42,7 @@ public class CreateUserService {
     private final AuthUtils authUtils;
     private final PasswordUtils passwordUtils;
     private final GetSystemParameterService getSystemParameterService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     private static final String ADMIN_USER_USE_INTERNAL_DOMAIN = "admin.user.use_internal_domain";
 
@@ -55,12 +59,18 @@ public class CreateUserService {
             String tempPassword = passwordUtils.generateRandomPassword(8);
             setUserPasswordAndDefaults(user, tempPassword);
 
-            // # TODO: Implementar o envio de email.
-            System.out.println("==========================================");
-            System.out.println("Your temp password is: " + tempPassword);
-            System.out.println("==========================================");
+            UserCreateEmailSenderMessage emailSenderMessage = UserCreateEmailSenderMessage.builder()
+                    .userEmail(user.getEmail())
+                    .firstname(user.getFirstName())
+                    .lastname(user.getLastName())
+                    .username(user.getUsername())
+                    .password(tempPassword)
+                    .build();
 
             user = userRepository.save(user);
+
+            applicationEventPublisher.publishEvent(new UserCreatedEvent(this, emailSenderMessage));
+
             return userMapper.toResponse(user);
         } catch (DataIntegrityViolationException ex) {
             handleDataIntegrityViolationException(dto, ex);
@@ -118,6 +128,7 @@ public class CreateUserService {
         user.setExternalId(IdGenerator.generateExternalId());
         user.setPassword(passwordEncoder.encode(tempPassword));
         user.setEmail(user.getEmail() == null ? user.getUsername() : user.getEmail());
+        user.setIsFirstLogin(true);
         user.setIsAccountLocked(false);
         user.setIsAccountExpired(false);
         user.setIsPasswordExpired(false);

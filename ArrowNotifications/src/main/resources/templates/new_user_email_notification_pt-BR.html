@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bem Vindo ao Arrow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .header h1 {
+            color: #333333;
+            margin: 0;
+        }
+        .content {
+            padding: 20px 0;
+        }
+        .content p {
+            color: #666666;
+            line-height: 1.6;
+        }
+        .details {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .details p {
+            margin: 5px 0;
+        }
+        .details strong {
+            color: #333333;
+        }
+        .footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            color: #888888;
+        }
+        .button {
+            background-color: #1e90ff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Bem Vindo ao Arrow</h1>
+    </div>
+    <div class="content">
+        <p>Olá, <strong th:text="${firstName} + ' ' + ${lastName}">FirstName LastName</strong>!</p>
+        <p>Estamos muito felizes em tê-lo conosco. Aqui estão os detalhes da sua conta:</p>
+        <div class="details">
+            <p><strong>Nome de usuário:</strong> <span th:text="${username}">username</span></p>
+            <p><strong>Senha:</strong> <span th:text="${password}">password</span></p>
+        </div>
+        <p>
+            Você pode acessar a aplicação através do link abaixo:
+            </br>
+            <a th:href="@{http://seu-dominio.com}" class="button">Acessar Aplicação</a>
+        </p>
+    </div>
+    <div class="footer">
+        <p>Atenciosamente,</p>
+        <p>Equipe Arrow</p>
+    </div>
+</div>
+</body>
+</html>

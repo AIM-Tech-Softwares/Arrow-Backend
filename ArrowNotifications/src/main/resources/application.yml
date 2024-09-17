@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: ArrowNotifications
+  thymeleaf:
+    enabled: true
+  sendgrid:
+    api-key: ${API_KEY_SEND_GRID:none}
+  profiles:
+    active: ${CURRENT_PROFILE:test}
+arrownotifications:
+  app:
+    email-sender:
+      from: deve.rafaeljaber@gmail.com
+      friendly-name: Aim Tech - Arrow
