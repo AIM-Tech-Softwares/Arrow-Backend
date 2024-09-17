@@ -17,7 +17,7 @@ public class PasswordRecoveryNotificationConsumer {
 
     @KafkaListener(
             topics = "#{appProperties.getKafka.getTopics.getPasswordUserRecovery}",
-            groupId = "create-user-consumer-1"
+            groupId = "#{appProperties.getKafka.getGroupId}"
     )
     public void execute(String message) {
         PasswordRecoveryNotificationMessage senderMessage = convert(message);

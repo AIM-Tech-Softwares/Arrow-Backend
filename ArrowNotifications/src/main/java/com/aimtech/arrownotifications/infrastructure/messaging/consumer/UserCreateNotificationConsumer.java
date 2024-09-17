@@ -18,7 +18,7 @@ public class UserCreateNotificationConsumer {
 
     @KafkaListener(
             topics = "#{appProperties.getKafka.getTopics.getCreateUser}",
-            groupId = "create-user-consumer-1"
+            groupId = "#{appProperties.getKafka.getGroupId}"
     )
     public void execute(String message) {
         UserCreateEmailSenderMessage senderMessage = convert(message);

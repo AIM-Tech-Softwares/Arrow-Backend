@@ -20,6 +20,7 @@ arrownotifications:
       request-timeout: 15000
       retention-ms: "604800000"
       cleanup-policy: "delete"
+      group-id: "notification-server-1"
       topics:
         create-user: "create-user-topic"
         password-user-recovery: "user-password-recovery-topic"

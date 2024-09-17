@@ -28,6 +28,7 @@ public class AppProperties {
         private Integer requestTimeout;
         private String retentionMs;
         private String cleanupPolicy;
+        private String groupId;
         private TopicsProps topics = new TopicsProps();
     }
 
