@@ -57,5 +57,6 @@ public class AppProperties {
     @Setter
     public static class TopicsProps {
         private String createUser;
+        private String passwordUserRecovery;
     }
 }

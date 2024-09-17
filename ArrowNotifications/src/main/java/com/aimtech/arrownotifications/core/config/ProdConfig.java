@@ -1,7 +1,9 @@
 package com.aimtech.arrownotifications.core.config;
 
 import com.aimtech.arrownotifications.core.properties.AppProperties;
+import com.aimtech.arrownotifications.domain.usecases.PasswordRecoveryNotificationService;
 import com.aimtech.arrownotifications.domain.usecases.UserCreateEmailSenderService;
+import com.aimtech.arrownotifications.infrastructure.usecases.SendGridPasswordRecoveryNotificationServiceImpl;
 import com.aimtech.arrownotifications.infrastructure.usecases.SendGridUserCreateEmailSenderServiceImpl;
 import com.sendgrid.SendGrid;
 import lombok.RequiredArgsConstructor;
@@ -21,5 +23,10 @@ public class ProdConfig {
     @Bean
     public UserCreateEmailSenderService userCreateEmailSenderService() {
         return new SendGridUserCreateEmailSenderServiceImpl(appProperties, sendGrid, templateEngine);
+    }
+
+    @Bean
+    public PasswordRecoveryNotificationService passwordRecoveryNotificationService() {
+        return new SendGridPasswordRecoveryNotificationServiceImpl(appProperties, sendGrid, templateEngine);
     }
 }

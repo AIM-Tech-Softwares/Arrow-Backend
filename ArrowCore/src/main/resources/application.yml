@@ -50,6 +50,7 @@ arrowcore:
       cleanup-policy: "delete"
       topics:
         create-user: "create-user-topic"
+        password-user-recovery: "user-password-recovery-topic"
   security:
     key:
       private-key: classpath:keys/app.key

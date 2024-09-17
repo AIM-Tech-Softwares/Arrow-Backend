@@ -55,4 +55,19 @@ public class KafkaProducerConfig {
                 .config("cleanup.policy", cleanup)
                 .build();
     }
+
+    @Bean
+    public NewTopic userPasswordRecoveryTopic() {
+        String topic = appProperties.getKafka().getTopics().getPasswordUserRecovery();
+        String retention = appProperties.getKafka().getRetentionMs();
+        String cleanup = appProperties.getKafka().getCleanupPolicy();
+
+        return TopicBuilder
+                .name(topic)
+                .partitions(1)
+                .replicas(1)
+                .config("retention.ms", retention)
+                .config("cleanup.policy", cleanup)
+                .build();
+    }
 }

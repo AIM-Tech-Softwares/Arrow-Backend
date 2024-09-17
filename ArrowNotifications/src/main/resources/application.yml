@@ -22,3 +22,4 @@ arrownotifications:
       cleanup-policy: "delete"
       topics:
         create-user: "create-user-topic"
+        password-user-recovery: "user-password-recovery-topic"
