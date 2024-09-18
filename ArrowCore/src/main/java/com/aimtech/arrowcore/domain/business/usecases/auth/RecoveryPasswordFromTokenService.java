@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -66,6 +67,7 @@ public class RecoveryPasswordFromTokenService {
         passwordRecover.setUsedAt(OffsetDateTime.now());
         passwordRecoveryRepository.save(passwordRecover);
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setLastPasswordChangeDate(new Date());
         userRepository.save(user);
     }
 }

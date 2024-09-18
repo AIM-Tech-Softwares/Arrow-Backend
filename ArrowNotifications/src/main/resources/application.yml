@@ -1,0 +1,26 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: ArrowNotifications
+  thymeleaf:
+    enabled: true
+  sendgrid:
+    api-key: ${API_KEY_SEND_GRID:none}
+  profiles:
+    active: ${CURRENT_PROFILE:test}
+arrownotifications:
+  app:
+    email-sender:
+      from: deve.rafaeljaber@gmail.com
+      friendly-name: Aim Tech - Arrow
+    kafka:
+      server: localhost:9092
+      retries: 10
+      request-timeout: 15000
+      retention-ms: "604800000"
+      cleanup-policy: "delete"
+      group-id: "notification-server-1"
+      topics:
+        create-user: "create-user-topic"
+        password-user-recovery: "user-password-recovery-topic"
