@@ -42,6 +42,15 @@ arrowcore:
       login-attempts:
         max-attempts: 5
         lockout-duration-in-seconds: 900
+    kafka:
+      server: localhost:9092
+      retries: 10
+      request-timeout: 15000
+      retention-ms: "604800000"
+      cleanup-policy: "delete"
+      topics:
+        create-user: "create-user-topic"
+        password-user-recovery: "user-password-recovery-topic"
   security:
     key:
       private-key: classpath:keys/app.key
