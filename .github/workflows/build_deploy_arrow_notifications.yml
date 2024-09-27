@@ -1,9 +1,12 @@
 name: Build ArrowNotifications Application
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature/arrow-119
+      - master
+    paths:
+      - 'ArrowNotifications/**'
+  workflow_dispatch:
 
 jobs:
   build:

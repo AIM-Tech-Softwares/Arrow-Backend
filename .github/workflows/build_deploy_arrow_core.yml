@@ -1,9 +1,12 @@
 name: Build ArrowCore Application
 
 on:
-  push:
+  pull_request:
     branches:
-      - feature/arrow-119
+      - master
+    paths:
+      - 'ArrowCore/**'
+  workflow_dispatch:
 
 jobs:
   build:
