@@ -67,7 +67,10 @@ jobs:
       -
         name: Build and push
         uses: docker/build-push-action@v6
-        with:
-          push: 'true'
-          file: './Dockerfile'
-          tags: rafaeljaber/arrow-notifications:latest,rafaeljaber/arrow-notificaitons:${{ steps.generate_tag.outputs.sha }}
+        env:
+          REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+          TAG: ${{ steps.generate_tag.outputs.sha }}
+        run: |
+          docker build -t $REGISTRY/arrow-notifications:$TAG .
+          docker tag $REGISTRY/arrow-notifications:$TAG $REGISTRY/arrow-notifications:latest
+          docker push --all-tags $REGISTRY/arrow-notifications
