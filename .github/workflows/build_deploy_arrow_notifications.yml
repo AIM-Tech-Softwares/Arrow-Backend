@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - 'ArrowNotifications/**'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -51,10 +54,6 @@ jobs:
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
       -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      -
         name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -62,8 +61,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      -
         name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          push: 'true'
-          tags: rafaeljaber/arrow-notifications:latest,rafaeljaber/arrow-notificaitons:${{ steps.generate_tag.outputs.sha }}
+        env:
+          REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+          TAG: ${{ steps.generate_tag.outputs.sha }}
+        run: |
+          docker build -t $REGISTRY/arrow-notifications:$TAG .
+          docker tag $REGISTRY/arrow-notifications:$TAG $REGISTRY/arrow-notifications:latest
+          docker push --all-tags $REGISTRY/arrow-notifications
