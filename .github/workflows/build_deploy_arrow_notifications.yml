@@ -1,16 +1,9 @@
 name: Build ArrowNotifications Application
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'ArrowNotifications/**'
   pull_request:
     branches:
       - master
-    paths:
-      - 'ArrowNotifications/**'
 
 jobs:
   build:
