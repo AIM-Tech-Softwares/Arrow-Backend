@@ -1,16 +1,9 @@
 name: Build ArrowCore Application
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'ArrowCore/**'
   pull_request:
     branches:
       - master
-    paths:
-      - 'ArrowCore/**'
 
 jobs:
   build:
