@@ -74,5 +74,5 @@ jobs:
         with:
           push: 'true'
           tags:
-            rafaeljaber/arrow-arrowcore:latest
-            rafaeljaber/arrow-arrowcore:${{ steps.generate_tag.outputs.sha }}
+            rafaeljaber/arrow-core:latest
+            rafaeljaber/arrow-core:${{ steps.generate_tag.outputs.sha }}
