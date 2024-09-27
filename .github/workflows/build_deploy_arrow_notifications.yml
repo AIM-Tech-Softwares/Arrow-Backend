@@ -66,6 +66,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: 'true'
-          tags:
-            rafaeljaber/arrow-notifications:latest
-            rafaeljaber/arrow-notificaitons:${{ steps.generate_tag.outputs.sha }}
+          tags: rafaeljaber/arrow-notifications:latest,rafaeljaber/arrow-notificaitons:${{ steps.generate_tag.outputs.sha }}
