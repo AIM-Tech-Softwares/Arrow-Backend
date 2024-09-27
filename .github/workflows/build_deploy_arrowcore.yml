@@ -8,7 +8,7 @@ on:
       - 'ArrowCore/**'
   pull_request:
     branches:
-      - main
+      - master
     paths:
       - 'ArrowCore/**'
 
