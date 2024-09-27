@@ -19,9 +19,6 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
 
-      - name: teste diretorio
-        run: pwd
-
       -
         name: Setup Java 21
         uses: actions/setup-java@v4
@@ -53,13 +50,16 @@ jobs:
           SHA=$(echo $GITHUB_SHA | head -c7)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
-
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       -
-        name: Merda do Push
-        run: |
-          pwd
-          ls
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       -
         name: Build and push
@@ -69,4 +69,4 @@ jobs:
         run: |
           docker build -t $REGISTRY/arrow-notifications:$TAG .
           docker tag $REGISTRY/arrow-notifications:$TAG $REGISTRY/arrow-notifications:latest
-#          docker push --all-tags $REGISTRY/arrow-notifications
+          docker push --all-tags $REGISTRY/arrow-notifications
