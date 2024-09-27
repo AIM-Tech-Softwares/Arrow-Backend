@@ -64,7 +64,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Merda do Push
+      -
+        name: Merda do Push
         run: |
           pwd
           ls
