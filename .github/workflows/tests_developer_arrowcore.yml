@@ -1,0 +1,51 @@
+name: Tests Developer ArrowCore Application
+
+on:
+  push:
+    branches:
+      - developer
+    paths:
+      - 'ArrowCore/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'ArrowCore/**'
+
+jobs:
+  build:
+    name: Build ArrowCore
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./ArrowCore
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+
+      -
+        name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      -
+        name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('ArrowCore/gradle.lockfile') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      -
+        name: Build with Gradle
+        run: ./gradlew build -x test
+
+      -
+        name: Run tests
+        run: ./gradlew test
